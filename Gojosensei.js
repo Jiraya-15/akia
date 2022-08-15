@@ -111,11 +111,8 @@ const nexusnw = require('xfarr-api')
 //Database\\
 let setik = JSON.parse(fs.readFileSync('./database/setik.json'));
 let vien = JSON.parse(fs.readFileSync('./database/vien.json'));
-let autosticker = JSON.parse(fs.readFileSync('./database/autosticker.json'));
-const _autostick = JSON.parse(fs.readFileSync('./database/autostickpc.json'));
 let imagi = JSON.parse(fs.readFileSync('./database/imagi.json'))
 let videox = JSON.parse(fs.readFileSync('./database/video.json'))
-
 
 //read database\\
 let tebaklagu = db.data.game.tebaklagu = []
@@ -134,7 +131,7 @@ module.exports = GojoMdNx = async (GojoMdNx, m, chatUpdate, store) => {
     try {
         var body = (m.mtype === 'conversation') ? m.message.conversation : (m.mtype == 'imageMessage') ? m.message.imageMessage.caption : (m.mtype == 'videoMessage') ? m.message.videoMessage.caption : (m.mtype == 'extendedTextMessage') ? m.message.extendedTextMessage.text : (m.mtype == 'buttonsResponseMessage') ? m.message.buttonsResponseMessage.selectedButtonId : (m.mtype == 'listResponseMessage') ? m.message.listResponseMessage.singleSelectReply.selectedRowId : (m.mtype == 'templateButtonReplyMessage') ? m.message.templateButtonReplyMessage.selectedId : (m.mtype === 'messageContextInfo') ? (m.message.buttonsResponseMessage?.selectedButtonId || m.message.listResponseMessage?.singleSelectReply.selectedRowId || m.text) : ''
         var budy = (typeof m.text == 'string' ? m.text : '')
-        var prefix = prefa ? /^[°•π÷×¶∆£¢€¥®™+✓_=|~!?@#$%^&.©^]/gi.test(body) ? body.match(/^[°•π÷×¶∆£¢€¥®™+✓_=|~!?@#$%^&.©^]/gi)[0] : "1" : prefa ?? global.prefix
+        var prefix = prefa ? /^[°•π÷×¶∆£¢€¥®™+✓_=|~!?@#$%^&.©^]/gi.test(body) ? body.match(/^[°•π÷×¶∆£¢€¥®™+✓_=|~!?@#$%^&.©^]/gi)[0] : "" : prefa ?? global.prefix
         const isCmd = body.startsWith(prefix)
         const command = body.replace(prefix, '').trim().split(/ +/).shift().toLowerCase()
         const args = body.trim().split(/ +/).slice(1)
@@ -159,9 +156,7 @@ module.exports = GojoMdNx = async (GojoMdNx, m, chatUpdate, store) => {
     	const isBotAdmins = m.isGroup ? groupAdmins.includes(botNumber) : false
     	const isAdmins = m.isGroup ? groupAdmins.includes(m.sender) : false
     	const isPremium = isCreator || global.premium.map(v => v.replace(/[^0-9]/g, '') + '@s.whatsapp.net').includes(m.sender) || false
-	    const isAutoSticker = m.isGroup ? autosticker.includes(from) : false
-        const Autoreply = m.isGroup ? autorep.includes(from) : true
-
+	    
         //member\\
         let picaks = [flaming,fluming,flarun,flasmurf]
 		let picak = picaks[Math.floor(Math.random() * picaks.length)]
