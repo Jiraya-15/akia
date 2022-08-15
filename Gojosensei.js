@@ -251,24 +251,24 @@ const reply = (teks) => {
     if (isAutoSticker) {
         if (/image/.test(mime) && !/webp/.test(mime)) {
             let mediac = await quoted.download()
-            await XeonBotInc.sendImageAsSticker(from, mediac, m, { packname: global.packname, author: global.author })
+            await GojoMdNx.sendImageAsSticker(from, mediac, m, { packname: global.packname, author: global.author })
             console.log(`Auto sticker detected`)
         } else if (/video/.test(mime)) {
             if ((quoted.msg || quoted).seconds > 11) return
             let mediac = await quoted.download()
-            await XeonBotInc.sendVideoAsSticker(from, mediac, m, { packname: global.packname, author: global.author })
+            await GojoMdNx.sendVideoAsSticker(from, mediac, m, { packname: global.packname, author: global.author })
         }
     }
     //Autosticker pc
             if (isAutoStick) {
         if (/image/.test(mime) && !/webp/.test(mime)) {
             let mediac = await quoted.download()
-            await XeonBotInc.sendImageAsSticker(from, mediac, m, { packname: global.packname, author: global.author })
+            await GojoMdNx.sendImageAsSticker(from, mediac, m, { packname: global.packname, author: global.author })
             console.log(`Auto sticker detected`)
         } else if (/video/.test(mime)) {
             if ((quoted.msg || quoted).seconds > 11) return
             let mediac = await quoted.download()
-            await XeonBotInc.sendVideoAsSticker(from, mediac, m, { packname: global.packname, author: global.author })
+            await GojoMdNx.sendVideoAsSticker(from, mediac, m, { packname: global.packname, author: global.author })
         }
     }
 	
@@ -604,10 +604,10 @@ ${arr.slice(6).join('')}
             break
 
             case 'attp': {
-                if (isBan) return reply(mess.ban)	 			
-                if (isBanChat) return reply(mess.banChat)
+                	 			
+                
                            if (!text) reply(`Use ${prefix}attp hello\n*Example : ${prefix + command} ${ownername}*` )
-                           await XeonBotInc.sendMedia(m.chat, `https://cililitan.herokuapp.com/api/attp?teks=${text}`, 'Xeon', 'Op', m, {asSticker: true}).catch((err) => reply(mess.error))
+                           await GojoMdNx.sendMedia(m.chat, `https://cililitan.herokuapp.com/api/attp?teks=${text}`, 'Xeon', 'Op', m, {asSticker: true}).catch((err) => reply(mess.error))
                          }
                          break
 
@@ -933,8 +933,8 @@ let teks = ` الــمــنــشــن الــجــمــاعــي
 
             case 'autosticker':
             case 'autostiker':
-   if (isBan) return reply(mess.ban)	 			
-if (isBanChat) return reply(mess.banChat)
+   	 			
+
 if (!m.isGroup) return replay(mess.group)
 if (!isBotAdmins) return reply(mess.botAdmin)
 if (!isAdmins && !isCreator) return reply(mess.admin)
@@ -953,8 +953,8 @@ reply('تم الالغاء')
 break
 case 'autostickerpc':
             case 'autostikerpc':
-   if (isBan) return reply(mess.ban)	 			
-if (isBanChat) return reply(mess.banChat)
+   	 			
+
 if (!m.isGroup) return replay(mess.group)
 if (args.length < 1) return reply('type autosticker on to activate\ntype autosticker off to disable')
 if (args[0]  === 'on'){
