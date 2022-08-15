@@ -473,31 +473,6 @@ ${isWin ? `@${winner.split('@')[0]} فاز / ت` : isTie ? `انتهت` : `دو�
 	    }
 
 
-        // Autosticker gc
-        if (isAutoSticker) {
-            if (/image/.test(mime) && !/webp/.test(mime)) {
-                let mediac = await quoted.download()
-                await GojoMdNx.sendImageAsSticker(from, mediac, m, { packname: global.packname, author: global.author })
-                console.log(`Auto sticker detected`)
-            } else if (/video/.test(mime)) {
-                if ((quoted.msg || quoted).seconds > 11) return
-                let mediac = await quoted.download()
-                await GojoMdNx.sendVideoAsSticker(from, mediac, m, { packname: global.packname, author: global.author })
-            }
-        }
-        //Autosticker pc
-                if (isAutoStick) {
-            if (/image/.test(mime) && !/webp/.test(mime)) {
-                let mediac = await quoted.download()
-                await GojoMdNx.sendImageAsSticker(from, mediac, m, { packname: global.packname, author: global.author })
-                console.log(`Auto sticker detected`)
-            } else if (/video/.test(mime)) {
-                if ((quoted.msg || quoted).seconds > 11) return
-                let mediac = await quoted.download()
-                await GojoMdNx.sendVideoAsSticker(from, mediac, m, { packname: global.packname, author: global.author })
-            }
-        }
-
         //Suit PvP\\
 	    let mentionUser = [...new Set([...(m.mentionedJid || []), ...(m.quoted ? [m.quoted.sender] : [])])]
 	    for (let jid of mentionUser) {
@@ -532,45 +507,6 @@ switch(command) {
                 reply(`${m.pushName} انه في وضع الاختفاء${text ? ': ' + text : ''}`)
             }
             break	
-
-            case 'autosticker':
-            case 'autostiker':
-   if (isBan) return reply(mess.ban)	 			
-if (isBanChat) return reply(mess.banChat)
-if (!m.isGroup) return replay(mess.group)
-if (!isBotAdmins) return reply(mess.botAdmin)
-if (!isAdmins && !isCreator) return reply(mess.admin)
-if (args.length < 1) return reply('type auto sticker on to enable\ntype auto sticker off to disable')
-if (args[0]  === 'on'){
-if (isAutoSticker) return reply(`Already activated`)
-autosticker.push(from)
-fs.writeFileSync('./database/autosticker.json', JSON.stringify(autosticker))
-reply('تم التفعيل')
-} else if (args[0] === 'off'){
-let anu = autosticker.indexOf(from)
-autosticker.splice(anu, 1)
-fs.writeFileSync('./database/autosticker.json', JSON.stringify(autosticker))
-reply('تم التعطيل')
-}
-break
-case 'autostickerpc':
-            case 'autostikerpc':
-   if (isBan) return reply(mess.ban)	 			
-if (isBanChat) return reply(mess.banChat)
-if (!m.isGroup) return replay(mess.group)
-if (args.length < 1) return reply('type autosticker on to activate\ntype autosticker off to disable')
-if (args[0]  === 'on'){
-if (isAutoStick) return reply(`Already activated`)
-_autostick.push(from)
-fs.writeFileSync('./database/autostickpc.json', JSON.stringify(autosticker))
-reply('autosticker pc activated')
-} else if (args[0] === 'off'){
-let anu = autosticker.indexOf(from)
-_autostick.splice(anu, 1)
-fs.writeFileSync('./database/autostickpc.json', JSON.stringify(autosticker))
-reply('autosticker pc deactivated')
-}
-break
 
         case 'اكس_او': {
             let TicTacToe = require("./lib/tictactoe")
