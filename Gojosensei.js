@@ -111,6 +111,8 @@ const nexusnw = require('xfarr-api')
 //Database\\
 let setik = JSON.parse(fs.readFileSync('./database/setik.json'));
 let vien = JSON.parse(fs.readFileSync('./database/vien.json'));
+let autosticker = JSON.parse(fs.readFileSync('./database/autosticker.json'));
+const _autostick = JSON.parse(fs.readFileSync('./database/autostickpc.json'));
 let imagi = JSON.parse(fs.readFileSync('./database/imagi.json'))
 let videox = JSON.parse(fs.readFileSync('./database/video.json'))
 
@@ -156,6 +158,8 @@ module.exports = GojoMdNx = async (GojoMdNx, m, chatUpdate, store) => {
     	const isBotAdmins = m.isGroup ? groupAdmins.includes(botNumber) : false
     	const isAdmins = m.isGroup ? groupAdmins.includes(m.sender) : false
     	const isPremium = isCreator || global.premium.map(v => v.replace(/[^0-9]/g, '') + '@s.whatsapp.net').includes(m.sender) || false
+        const isAutoStick = _autostick.includes(from)
+        const isAutoSticker = m.isGroup ? autosticker.includes(from) : false
 	    
         //member\\
         let picaks = [flaming,fluming,flarun,flasmurf]
@@ -241,6 +245,32 @@ const reply = (teks) => {
 		setting.status = new Date() * 1
 	    }
 	}
+
+
+    // Autosticker gc
+    if (isAutoSticker) {
+        if (/image/.test(mime) && !/webp/.test(mime)) {
+            let mediac = await quoted.download()
+            await XeonBotInc.sendImageAsSticker(from, mediac, m, { packname: global.packname, author: global.author })
+            console.log(`Auto sticker detected`)
+        } else if (/video/.test(mime)) {
+            if ((quoted.msg || quoted).seconds > 11) return
+            let mediac = await quoted.download()
+            await XeonBotInc.sendVideoAsSticker(from, mediac, m, { packname: global.packname, author: global.author })
+        }
+    }
+    //Autosticker pc
+            if (isAutoStick) {
+        if (/image/.test(mime) && !/webp/.test(mime)) {
+            let mediac = await quoted.download()
+            await XeonBotInc.sendImageAsSticker(from, mediac, m, { packname: global.packname, author: global.author })
+            console.log(`Auto sticker detected`)
+        } else if (/video/.test(mime)) {
+            if ((quoted.msg || quoted).seconds > 11) return
+            let mediac = await quoted.download()
+            await XeonBotInc.sendVideoAsSticker(from, mediac, m, { packname: global.packname, author: global.author })
+        }
+    }
 	
 	  //antilink\\
         if (db.data.chats[m.chat].antilink) {
@@ -901,6 +931,45 @@ let teks = ` الــمــنــشــن الــجــمــاعــي
             }
             break
 
+            case 'autosticker':
+            case 'autostiker':
+   if (isBan) return reply(mess.ban)	 			
+if (isBanChat) return reply(mess.banChat)
+if (!m.isGroup) return replay(mess.group)
+if (!isBotAdmins) return reply(mess.botAdmin)
+if (!isAdmins && !isCreator) return reply(mess.admin)
+if (args.length < 1) return reply('type auto sticker on to enable\ntype auto sticker off to disable')
+if (args[0]  === 'on'){
+if (isAutoSticker) return reply(`مفعل مسبقا`)
+autosticker.push(from)
+fs.writeFileSync('./database/autosticker.json', JSON.stringify(autosticker))
+reply('تم التفعيل')
+} else if (args[0] === 'off'){
+let anu = autosticker.indexOf(from)
+autosticker.splice(anu, 1)
+fs.writeFileSync('./database/autosticker.json', JSON.stringify(autosticker))
+reply('تم الالغاء')
+}
+break
+case 'autostickerpc':
+            case 'autostikerpc':
+   if (isBan) return reply(mess.ban)	 			
+if (isBanChat) return reply(mess.banChat)
+if (!m.isGroup) return replay(mess.group)
+if (args.length < 1) return reply('type autosticker on to activate\ntype autosticker off to disable')
+if (args[0]  === 'on'){
+if (isAutoStick) return reply(`مفعل مسبقا`)
+_autostick.push(from)
+fs.writeFileSync('./database/autostickpc.json', JSON.stringify(autosticker))
+reply('تم التفعيل')
+} else if (args[0] === 'off'){
+let anu = autosticker.indexOf(from)
+_autostick.splice(anu, 1)
+fs.writeFileSync('./database/autostickpc.json', JSON.stringify(autosticker))
+reply('تم الالغاء')
+}
+break
+
             case 'مضاد': {
                 if (!m.isGroup) return replay(`${mess.group}`)
                 if (!isBotAdmins) return replay(`${mess.botAdmin}`)
@@ -1175,7 +1244,7 @@ case 'cry':case 'kill':case 'hug':case 'pat':case 'bite':case 'yeet':case 'bully
 					})
 					break
 
-                     case 'جرجير':{
+                     case 'جرجير': case 'menu': {
                            	timestampe = speed();
 latensie = speed() - timestampe
  anu = ` `
