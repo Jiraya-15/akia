@@ -1287,14 +1287,12 @@ const template = generateWAMessageFromContent(m.chat, proto.Message.fromObject({
                             hydratedFooterText: `
 「 السلام عليكم 」
  「 ${pushname} 」
- 
+
  「 معلومات 」
 ✙ اسم البوت : ${global.botname}
-✙ مطور البوت : ${global.ownername}
+✙  المطور: ${global.ownername}
 ✙ رقم المطور : ${global.owner}
 ✙ عدد المستخدمين : ${Object.keys(global.db.data.users).length}
-────────────────┈ ⳹
-  اذا هناك اخطاء فالبوت كلم المطور
 `,
                             hydratedButtons: [{
                                 urlButton: {
