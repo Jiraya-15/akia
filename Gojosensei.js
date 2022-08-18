@@ -1311,6 +1311,11 @@ const template = generateWAMessageFromContent(m.chat, proto.Message.fromObject({
                                     displayText: 'المطور',
                                     id: `${prefix}المطور`
                                 }
+                            }, {
+                                quickReplyButton: {
+                                    displayText: 'الاوامر',
+                                    id: `${prefix}اوامر`
+                                }
                             }]
                         }
                     }
@@ -1319,7 +1324,7 @@ const template = generateWAMessageFromContent(m.chat, proto.Message.fromObject({
                 }
 break
 
-case 'جرجير': case 'menu': {
+case 'اوامر': case 'akida': {
     timestampe = speed();
 latensie = speed() - timestampe
 anu = ` `
