@@ -1284,8 +1284,6 @@ const template = generateWAMessageFromContent(m.chat, proto.Message.fromObject({
                     templateMessage: {
                         hydratedTemplate: {
                             hydratedContentText: anu,
-                            locationMessage: {
-                            jpegThumbnail: fs.readFileSync('./GojoMedia/gojo.jpg')},
                             hydratedFooterText: `
 「 السلام عليكم 」
  「 ${pushname} 」
