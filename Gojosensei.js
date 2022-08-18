@@ -1016,8 +1016,8 @@ let teks = ` الــمــنــشــن الــجــمــاعــي
                 reply(`Antilink Inactive !`)
                 } else {
                  let buttons = [
-                        { buttonId: 'antilink open', buttonText: { displayText: 'open' }, type: 1 },
-                        { buttonId: 'antilink close', buttonText: { displayText: 'close' }, type: 1 }
+                        { buttonId: 'antilink open', buttonText: { displayText: 'تفعيل' }, type: 1 },
+                        { buttonId: 'antilink close', buttonText: { displayText: 'تعطيل' }, type: 1 }
                     ]
                     await GojoMdNx.sendButtonText(m.chat, buttons, `مضاد الروابط`, GojoMdNx.user.name, m)
                 }
@@ -1037,8 +1037,8 @@ let teks = ` الــمــنــشــن الــجــمــاعــي
                 reply(`${GojoMdNx.user.name} يمكن للاعضاء استخدام البوت`)
                 } else {
                  let buttons = [
-                        { buttonId: 'mute on', buttonText: { displayText: 'on' }, type: 1 },
-                        { buttonId: 'mute off', buttonText: { displayText: 'off' }, type: 1 }
+                        { buttonId: 'mute on', buttonText: { displayText: 'فك الحضر' }, type: 1 },
+                        { buttonId: 'mute off', buttonText: { displayText: 'حضر' }, type: 1 }
                     ]
                     await GojoMdNx.sendButtonText(m.chat, buttons, `اختر اذا بدك الاعضاء يستخدمون البوت او لا`, GojoMdNx.user.name, m)
                 }
@@ -1311,11 +1311,6 @@ const template = generateWAMessageFromContent(m.chat, proto.Message.fromObject({
                                     displayText: 'الأوامر',
                                     id: `${prefix}tlf`
                                 }
-                            }, {
-                                quickReplyButton: {
-                                    displayText: 'المطور',
-                                    id: `${prefix}المطور`
-                                }
                             }]
                         }
                     }
@@ -1426,11 +1421,6 @@ hydratedTemplate: {
      urlButton: {
      displayText: 'قروب البوت',
          url: `${sc}`
-     }
- }, {
-     quickReplyButton: {
-         displayText: 'المطور',
-         id: `${prefix}المطور`
      }
  }]
 }
