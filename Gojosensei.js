@@ -1562,14 +1562,9 @@ case 'akidanegh': {
                                     url: `${myweb}`
                                 }
                             }, {
-                            	urlButton: {
-                                displayText: 'قروب البوت',
-                                    url: `${sc}`
-                                }
-                            }, {
                                 quickReplyButton: {
                                     displayText: 'المطور',
-                                    id: `${prefix}المطور`
+                                    id: `${prefix}owner`
                                 }
                             }]
                         }
