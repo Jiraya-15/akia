@@ -1,7 +1,7 @@
 {
   "name": "Jiraya-Bot",
   "description": "whatsapp md bot build with nodejs",
-  "repository": "https://github.com/alexpaco15/Gojo-Satoru.git",
+  "repository": "https://github.com/sirajarj/Gojo-Satoru.git",
   "logo": "https://i.ibb.co/84wBZ4v/th-4.jpg",
   "keywords": ["nodejs", "bot", "whatsapp bot", "whatsapp automation", "multi device"],
   "buildpacks": [
