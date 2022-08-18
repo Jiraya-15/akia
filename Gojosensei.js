@@ -1311,6 +1311,11 @@ const template = generateWAMessageFromContent(m.chat, proto.Message.fromObject({
                                     displayText: 'المطور',
                                     id: `${prefix}المطور`
                                 }
+                            }, {
+                                quickReplyButton: {
+                                    displayText: 'الاوامر',
+                                    id: `${prefix}اوامر`
+                                }
                             }]
                         }
                     }
@@ -1318,6 +1323,163 @@ const template = generateWAMessageFromContent(m.chat, proto.Message.fromObject({
                 GojoMdNx.relayMessage(m.chat, template.message, { messageId: template.key.id })
                 }
 break
+
+case 'اوامر': {
+    timestampe = speed();
+latensie = speed() - timestampe
+anu = ` `
+const template = generateWAMessageFromContent(m.chat, proto.Message.fromObject({
+templateMessage: {
+hydratedTemplate: {
+ hydratedContentText: anu,
+ hydratedFooterText: `
+ 📕 اختفاء
+ 📗 اترك سببا لخروجك من واتس
+ 📙مثال : اختفاء بروح اكل
+ 
+ 📕اكس_او
+ 📗ما يلزم شرح ، هي لعبة X O
+ 
+ 📕رياضيات
+ 📗البوت يجيب عمليات حسابة وانت لازم تجاوب صح
+ 
+ 📕قل
+ 📗البوت يعيد كلامك
+ 
+ 📕شبيهي
+ 📗البوت يمنشن شخص عشوائي على اساس شبيه لك كنوع من المزاح 
+ 
+ 📕 هل
+ 📗 تسأل البوت سؤال وهو يجاول 
+ 📙 مثال :  هل انا محنك؟
+ 
+ 📕اقدر
+ 📗  نفس 'هل' لكن هنا تسال البوت اذا تقدر تسوي شي
+ 📙مثال : اقدر اطرد... ؟
+ 
+ 📕 تشبيك
+ 📗 منشن شخصين (مزح)
+ 
+ 📕طرد
+ 📗طرد عضو من المجموعة
+ 
+ 📕دخل
+ 📗دخل شخص المجموعة
+ 
+ 📕ترقية
+ 📗ترقية عضو لمشرف
+ 
+ 📕تخفيض
+ 📗تخفيض عضو لمشرف
+ 
+ 📕 اسم
+ 📗 تغيير اسم المجموعة
+ 
+ 📕 وصف
+ 📗 تغيير وصف المجموعة
+ 
+ 📕حقيقة
+ 📗 البوت يرسل اسئلة وانت عليك تجاوب
+ 
+ 📕 منشن
+ 📗 منشن جماعي لكل اعضاء المجموعة
+────────────────┈ ⳹`,
+ hydratedButtons: [{
+     urlButton: {
+         displayText: 'قروب الانمي',
+         url: `${myweb}`
+     }
+ }, {
+     urlButton: {
+     displayText: 'قروب البوت',
+         url: `${sc}`
+     }
+ }, {
+     quickReplyButton: {
+         displayText: 'المطور',
+         id: `${prefix}المطور`
+     }
+ }, {
+     quickReplyButton: {
+         displayText: 'التالي',
+         id: `${prefix}اوامر1`
+     }
+ }]
+}
+}
+}), { userJid: m.chat })
+GojoMdNx.relayMessage(m.chat, template.message, { messageId: template.key.id })
+}
+break
+
+
+case 'اوامر1': {
+    timestampe = speed();
+latensie = speed() - timestampe
+anu = ` `
+const template = generateWAMessageFromContent(m.chat, proto.Message.fromObject({
+templateMessage: {
+hydratedTemplate: {
+ hydratedContentText: anu,
+ hydratedFooterText: `
+ 📕فعالية
+ 📗منشن مخفي للاستمارات 
+ 
+ 📕متصلين
+ 📗منشن كل المتصلين حاليا فالقروب
+ 
+ 📕ملصق
+ 📗تحويل صورة ، فيديو ، غيف لملصق
+ 
+ 📕دمج
+ 📗دمج اثنين من الايموجي
+ 
+ 📕 لصورة
+ 📗 تحويل ملصق لصورة
+ 
+ 📕لفيديو
+ 📗  تحويل ملصق متحرك لفيديو
+ 
+ 📕 لصوتية
+ 📗 تحويل فيديو لصوتية
+ 
+ 📕غيف
+ 📗تحويل صورة او فيدسو لغيف
+ 
+ 📕حذف_خلفية
+ 📗حذف خلفية الصور
+ 
+ 📕تطقيم
+ 📗جلب تطقيمات
+ 
+ 📕المطور
+ 📗معرفة مطور البوت
+────────────────┈ ⳹`,
+ hydratedButtons: [{
+     urlButton: {
+         displayText: 'قروب الانمي',
+         url: `${myweb}`
+     }
+ }, {
+     urlButton: {
+     displayText: 'قروب البوت',
+         url: `${sc}`
+     }
+ }, {
+     quickReplyButton: {
+         displayText: 'المطور',
+         id: `${prefix}المطور`
+     }
+ }]
+}
+}
+}), { userJid: m.chat })
+GojoMdNx.relayMessage(m.chat, template.message, { messageId: template.key.id })
+}
+break
+
+
+
             
 case 'akidanegh': {
   	anu = `
