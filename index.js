@@ -145,12 +145,12 @@ Kon = await getBuffer(`https://hardianto.xyz/api/welcome3?profile=${encodeURICom
 Tol = await getBuffer(`https://hardianto.xyz/api/goodbye3?profile=${encodeURIComponent(ppuser)}&name=${encodeURIComponent(nama)}&bg=https://i.ibb.co/Lhv49dJ/akida.jpg&namegb=${encodeURIComponent(metadata.subject)}&member=${encodeURIComponent(memb)}`)
                 if (anu.action == 'add') {
                     GojoMdNx.sendMessage(anu.id, { image: Kon, contextInfo: { mentionedJid: [num] }, caption: `
-                    السلام عليكم @${num.split("@")[0]},
-                    نورتنا في ${metadata.subject}
+السلام عليكم @${num.split("@")[0]},
+نورتنا في ${metadata.subject}
 
-                    الوصف : ${metadata.desc}
+الوصف : ${metadata.desc}
 
-                    نتمنى لك/ي وقتا ممتعا معنا`} )
+نتمنى لك/ي وقتا ممتعا معنا`} )
                 } else if (anu.action == 'remove') {
                     GojoMdNx.sendMessage(anu.id, { image: Tol, contextInfo: { mentionedJid: [num] }, caption: ` @${num.split("@")[0]} خرج/ت من المجموعة ${metadata.subject}
 
