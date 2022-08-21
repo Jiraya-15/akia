@@ -813,7 +813,7 @@ GojoMdNx.sendMessage(from, { text: `تشبيك : ${q}\n نسبة الحب : *${t
 		await GojoMdNx.updateBlockStatus(users, 'unblock').then((res) => reply(jsonformat(res))).catch((err) => reply(jsonformat(err)))
 	}
 	break
-	    case 'اسم': {
+	    case 'aaاسم': {
                 if (!m.isGroup) return replay(`${mess.group}`)
                 if (!isBotAdmins) return replay(`${mess.botAdmin}`)
                 if (!isAdmins) replay(`${mess.admin}`)
@@ -933,7 +933,7 @@ GojoMdNx.sendMessage(from, { text: `تشبيك : ${q}\n نسبة الحب : *${t
               GojoMdNx.sendMessage(from, { image: buffer, caption: ''+ xeondare }, {quoted:m})
               break
                 
-          case 'وصف': {
+          case 'aaوصف': {
                 if (!m.isGroup) return replay(`${mess.group}`)
                 if (!isBotAdmins) return replay(`${mess.botAdmin}`)
                 if (!isAdmins) replay(`${mess.admin}`)
@@ -992,8 +992,8 @@ let teks = ` الــمــنــشــن الــجــمــاعــي
                     await GojoMdNx.groupSettingUpdate(m.chat, 'not_announcement').then((res) => reply(`تم فتح الشات`)).catch((err) => reply(jsonformat(err)))
                 } else {
                 let buttons = [
-                        { buttonId: 'group open', buttonText: { displayText: 'فتح' }, type: 1 },
-                        { buttonId: 'group close', buttonText: { displayText: 'غلق' }, type: 1 }
+                        { buttonId: 'group open', buttonText: { displayText: 'open' }, type: 1 },
+                        { buttonId: 'group close', buttonText: { displayText: 'close' }, type: 1 }
                     ]
                     await GojoMdNx.sendButtonText(m.chat, buttons, `اغلاق وفتح المجموعة`, GojoMdNx.user.name, m)
 
@@ -1037,14 +1037,16 @@ let teks = ` الــمــنــشــن الــجــمــاعــي
                 reply(`${GojoMdNx.user.name} يمكن للاعضاء استخدام البوت`)
                 } else {
                  let buttons = [
-                        { buttonId: 'mute on', buttonText: { displayText: 'فك الحضر' }, type: 1 },
-                        { buttonId: 'mute off', buttonText: { displayText: 'حضر' }, type: 1 }
+                        { buttonId: 'mute on', buttonText: { displayText: 'on' }, type: 1 },
+                        { buttonId: 'mute off', buttonText: { displayText: 'off' }, type: 1 }
                     ]
                     await GojoMdNx.sendButtonText(m.chat, buttons, `اختر اذا بدك الاعضاء يستخدمون البوت او لا`, GojoMdNx.user.name, m)
                 }
              }
              break
             case 'رابط': {
+                if (!isBotAdmins) return replay(`${mess.botAdmin}`)
+                if (!isAdmins) return replay(`${mess.admin}`)
                 if (!m.isGroup) return replay(`${mess.group}`)
                 let response = await GojoMdNx.groupInviteCode(m.chat)
                 GojoMdNx.sendText(m.chat, `https://chat.whatsapp.com/${response}\n\n${groupMetadata.subject}`, m, { detectLink: true })
@@ -1109,6 +1111,7 @@ let teks = ` الــمــنــشــن الــجــمــاعــي
              }
              break
              case 'متصلين': {
+                    if (!isAdmins) return replay(`${mess.admin}`)
                     let id = args && /\d+\-\d+@g.us/.test(args[0]) ? args[0] : m.chat
                     let online = [...Object.keys(store.presences[id]), botNumber]
                     GojoMdNx.sendText(m.chat, 'قائمة المتصلين:\n\n' + online.map(v => '💠 @' + v.replace(/@.+/, '')).join`\n`, m, { mentions: online })
@@ -1289,10 +1292,10 @@ const template = generateWAMessageFromContent(m.chat, proto.Message.fromObject({
  「 ${pushname} 」
 
  「 معلومات 」
-✙ اسم البوت : ${global.botname}
-✙  المطور: ${global.ownername}
-✙ رقم المطور : ${global.owner}
-✙ عدد المستخدمين : ${Object.keys(global.db.data.users).length}
+✙      اسم البوت : ${global.botname}
+✙     المطور: ${global.ownername}
+✙     رقم المطور : ${global.owner}
+✙     عدد المستخدمين : ${Object.keys(global.db.data.users).length}
 `,
                             hydratedButtons: [{
                                 urlButton: {
@@ -1369,12 +1372,6 @@ hydratedTemplate: {
 
 📕تخفيض
 📗تخفيض عضو لمشرف
-
-📕 اسم
-📗 تغيير اسم المجموعة
-
-📕 وصف
-📗 تغيير وصف المجموعة
 
 📕حقيقة
 📗 اسئلة محرجة
