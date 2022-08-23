@@ -823,7 +823,6 @@ GojoMdNx.sendMessage(from, { text: `تشبيك : ${q}\n نسبة الحب : *${t
             break
 
             case 'ملصقي': case 'زرف': {
-                if (!isCreator) return replay(`${mess.owner}`)
              if (!args.join(" ")) return reply(`مثال :\nملصقي ${global.author}|${global.packname}`)
              const swn = args.join(" ")
              const pcknm = swn.split("|")[0];
