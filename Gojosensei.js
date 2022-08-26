@@ -1250,12 +1250,6 @@ let teks = ` الــمــنــشــن الــجــمــاعــي
             }
 	    break
 
-        case 'ثعلب':  
-                   let anufox= await fetchJson(`https://some-random-api.ml/img/fox`)
-                   let anu = await getBuffer(anufox.link)
-                   GojoMdNx.sendMessage(from, anu, image, {caption: `تمم 🦦`, quoted: m})
-                   break
-
                    case 'احزر': {
                     reply(mess.wait)
                     let anu = await fetchJson('https://raw.githubusercontent.com/iamriz7/kopel_/main/kopel.json')
