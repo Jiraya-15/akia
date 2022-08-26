@@ -1249,13 +1249,6 @@ let teks = ` الــمــنــشــن الــجــمــاعــي
             }
 	    break
 
-                   case 'احزر': {
-                    let anu = await fetchJson('https://pastebin.com/raw/Hbp2DrJd')
-                    let random = anu[Math.floor(Math.random() * anu.length)]
-                    GojoMdNx.sendMessage(m.chat, { image: { url: random }, caption: ` احزر اسم الشخصية` }, { quoted: m })
-                }
-            break
-
 
 
 
