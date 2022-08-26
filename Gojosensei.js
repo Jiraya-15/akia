@@ -113,6 +113,7 @@ let setik = JSON.parse(fs.readFileSync('./database/setik.json'));
 let vien = JSON.parse(fs.readFileSync('./database/vien.json'));
 let imagi = JSON.parse(fs.readFileSync('./database/imagi.json'))
 let videox = JSON.parse(fs.readFileSync('./database/video.json'))
+const ban = JSON.parse(fs.readFileSync('./database/banned.json'))
 
 //read database\\
 let tebaklagu = db.data.game.tebaklagu = []
@@ -156,6 +157,7 @@ module.exports = GojoMdNx = async (GojoMdNx, m, chatUpdate, store) => {
     	const isBotAdmins = m.isGroup ? groupAdmins.includes(botNumber) : false
     	const isAdmins = m.isGroup ? groupAdmins.includes(m.sender) : false
     	const isPremium = isCreator || global.premium.map(v => v.replace(/[^0-9]/g, '') + '@s.whatsapp.net').includes(m.sender) || false
+        const isBanned = ban.includes(sender)
 	    
         //member\\
         let picaks = [flaming,fluming,flarun,flasmurf]
@@ -627,15 +629,9 @@ ${arr.slice(6).join('')}
                     if (tebakgambar.hasOwnProperty(m.sender.split('@')[0])) return replay(`There Are Still Unfinished Sessions!`)
                     let anu = await fetchJson('https://raw.githubusercontent.com/BochilTeam/database/master/games/tebakgambar.json')
                     let result = anu[Math.floor(Math.random() * anu.length)]
-                    GojoMdNx.sendImage(m.chat, result.img, `Please Answer The Questions Above\n\nDescription : ${result.deskripsi}\nTime : 60 seconds`, m).then(() => {
-                    tebakgambar[m.sender.split('@')[0]] = result.jawaban.toLowerCase()
+                    GojoMdNx.sendImage(m.chat, result.img, m)( {
                     })
-                    await sleep(60000)
-                    if (tebakgambar.hasOwnProperty(m.sender.split('@')[0])) {
-                    console.log("Answer: " + result.jawaban)
-                    GojoMdNx.sendButtonText(m.chat, [{ buttonId: 'guess picture', buttonText: { displayText: 'Guess The Picture' }, type: 1 }], `Time Has Run Out\nAnswer:  ${tebakgambar[m.sender.split('@')[0]]}\n\nWant To Play Again? PressThe Button Below`, GojoMdNx.user.name, m)
-                    delete tebakgambar[m.sender.split('@')[0]]
-                    }
+                    
                 } else if (args[0] === 'word') {
                     if (tebakkata.hasOwnProperty(m.sender.split('@')[0])) return replay(`There Are Still Unfinished Sessions!`)
                     let anu = await fetchJson('https://raw.githubusercontent.com/nexusnw/fungames/main/GuessTheWord.js')
@@ -1243,12 +1239,97 @@ let teks = ` الــمــنــشــن الــجــمــاعــي
 
 	    case 'تطقيم': {
                 reply(mess.wait)
-                let anu = await fetchJson('https://raw.githubusercontent.com/iamriz7/kopel_/main/kopel.json')
+                let anu = await fetchJson('https://pastebin.com/raw/Hbp2DrJd')
                 let random = anu[Math.floor(Math.random() * anu.length)]
                 GojoMdNx.sendMessage(m.chat, { image: { url: random.male }, caption: ` للولد 🙎🏻‍♂️` }, { quoted: m })
                 GojoMdNx.sendMessage(m.chat, { image: { url: random.female }, caption: ` للبنت 🙎🏻‍♀️` }, { quoted: m })
             }
 	    break
+
+        case 'احزر': {
+            reply(mess.wait)
+            let anu = await fetchJson('https://raw.githubusercontent.com/iamriz7/kopel_/main/kopel.json')
+            let random = anu[Math.floor(Math.random() * anu.length)]
+            GojoMdNx.sendMessage(m.chat, { image: { url: random }, caption: ` احزر اسم الشخصية` }, { quoted: m })
+        }
+    break
+
+    case 'ثعلب':  
+                   let anufox= await fetchJson(`https://some-random-api.ml/img/fox`)
+                   let anu = await getBuffer(anufox.link)
+                   GojoMdNx.sendMessage(from, anu, image, {caption: `تمم 🦦`, quoted: m})
+                   break
+
+                   case 'سويت':
+              if (!q) return reply(`ارسل ${prefix}سويت ✂️ / 🪨 / 📄`)
+              const userspilih = q
+              if (!userspilih.match(/🪨|✂️|📄/)) return reply(`اختر 🪨, 📄, ✂️`)
+              var computer = Math.random();
+              if (computer < 0.34 ) {
+              computer = '🪨';
+              } else if( computer >= 0.34 && computer < 0.67) {
+              computer = '✂️';
+              } else {
+              computer = '📄';
+}
+              if ( userspilih == computer ) {
+              reply(`اخترنا نفس الشي، تعادل.`)
+              } else if ( userspilih == '🪨' ) {
+              if( computer == '✂️' ) {
+              reply(`انت: 🪨 وانا:   ✂️\nلقد فزت`)
+              } else {
+              reply(`انت: 🪨 وانا: 📄\nلقد خسرت`)
+}
+              } else if ( userspilih == '✂️' ) {
+              if( computer == 'حجر' ) {
+              reply(`انت: ✂️ وانا: 🪨\nلقد خسرت`)
+              } else {
+              reply(`انت: ✂️ وانا: 📄\nلقد فزت`)
+}
+              } else if ( userspilih == '📄' ) {
+              if( computer == 'حجر' ) {
+              reply(`انت: 📄 وانا: 🪨\nلقد فزت`)
+              } else {
+              reply(`انت: 📄 وانا: ✂️\nلقد خسرت`)
+}
+}
+              break
+
+              case 'نرد':
+			let random = Math.floor(Math.random() * 6) + 1
+		    let damdu = fs.readFileSync(`./sticker/${random}.webp`)
+			GojoMdNx.sendMessage(from, damdu, sticker, {quoted: m})
+			break
+
+            case 'حضر':
+if (!isGroup) return reply(mess.only.group)
+if (!isGroupAdmins) return reply(mess.only.admin)
+if (m.message.extendedTextMessage === undefined || m.message.extendedTextMessage === null) return 
+mentioned = m.message.extendedTextMessage.contextInfo.mentionedJid
+pru = '*\n'
+for (let _ of mentioned) {
+pru += `@${_.split('@')[0]}\n`
+}
+ban.push(`${mentioned}`)
+fs.writeFileSync('./database/banned.json', JSON.stringify(ban))
+susp = `『 تم الحضر 🚫 』\n\n◉الرقم: @${mentioned[0].split('@')[0]}\n\n*تم حضرك من استخدام البوت ، كلم جيرايا يفكه.*`
+mentions(`${susp}`, mentioned, true)   
+break
+
+case 'فك-الحضر':
+if (!isGroup) return reply(mess.only.group)
+if (!isGroupAdmins) return reply(mess.only.admin)
+if (m.message.extendedTextMessage === undefined || m.message.extendedTextMessage === null) return 
+mentioned = m.message.extendedTextMessage.contextInfo.mentionedJid
+pru = '*\n'
+for (let _ of mentioned) {
+pru += `@${_.split('@')[0]}\n`
+}
+ban.splice(`${mentioned}`)
+fs.writeFileSync('./database/banned.json', JSON.stringify(ban))
+susp = `『 تم فك الحضر ✅ 』\n\n◉الرقم: @${mentioned[0].split('@')[0]}\n\n*تم فك الحضر ، يمكنك استخدام البوت الان.*`
+mentions(`${susp}`, mentioned, true)   
+break
 
 
 		//Backup, for example, the video above doesn't come out\\
