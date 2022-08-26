@@ -822,7 +822,7 @@ GojoMdNx.sendMessage(from, { text: `تشبيك : ${q}\n نسبة الحب : *${t
             }
             break
 
-            case 'ملصقي': case 'زرف': {
+            case '11ملصقي': case '11زرف': {
              if (!args.join(" ")) return reply(`مثال :\nملصقي ${global.author}|${global.packname}`)
              const swn = args.join(" ")
              const pcknm = swn.split("|")[0];
@@ -1118,7 +1118,6 @@ let teks = ` الــمــنــشــن الــجــمــاعــي
              break
             case 'ملصق': {
             if (!quoted) return replay(`رد عصورة ب ${prefix + command}`)
-            reply(mess.wait)
                     if (/image/.test(mime)) {
                 let media = await quoted.download()
                 let encmedia = await GojoMdNx.sendImageAsSticker(m.chat, media, m, { packname: global.packname, author: global.author })
@@ -1251,18 +1250,11 @@ let teks = ` الــمــنــشــن الــجــمــاعــي
 	    break
 
                    case 'احزر': {
-                    reply(mess.wait)
-                    let anu = await fetchJson('https://raw.githubusercontent.com/iamriz7/kopel_/main/kopel.json')
+                    let anu = await fetchJson('https://pastebin.com/raw/Hbp2DrJd')
                     let random = anu[Math.floor(Math.random() * anu.length)]
                     GojoMdNx.sendMessage(m.chat, { image: { url: random }, caption: ` احزر اسم الشخصية` }, { quoted: m })
                 }
             break
-
-            case 'نرد':
-			let random = Math.floor(Math.random() * 6) + 1
-		    let damdu = fs.readFileSync(`./sticker/${random}.webp`)
-			GojoMdNx.sendMessage(from, damdu, sticker, {quoted: m})
-			break
 
 
 
