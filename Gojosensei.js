@@ -613,7 +613,7 @@ ${arr.slice(6).join('')}
 
             case 'شبيهي': {
                 if (isBan) return reply(mess.banned)
-                if (isBanChat) return reply(mess.bangc)
+                
             if (!m.isGroup) return replay(`${mess.grouponly}`)
             let member = participants.map(u => u.id)
             let me = m.sender
@@ -624,7 +624,7 @@ ${arr.slice(6).join('')}
             let buttons = [
             { buttonId: '👀', buttonText: { displayText: 'لا اتفق' }, type: 1 }
             ]
-            await Miku.sendButtonText(m.chat, buttons, jawab, Miku.user.name, m, {mentions: ments})
+            await GojoMdNx.sendButtonText(m.chat, buttons, jawab, GojoMdNx.user.name, m, {mentions: ments})
             }
             break
             case 'هل':
@@ -860,6 +860,23 @@ GojoMdNx.sendMessage(from, { text: `تشبيك : ${q}\n نسبة الحب : *${t
                 reply(mess.success)
                 }
                 break
+
+                case 'منشن1':
+  
+                    if (!m.isGroup) return replay(`${mess.group}`)
+                    if (!isAdmins) return replay(`${mess.admin}`)
+if(q) { var Text =`📌 * ${q}*\n*🍁  ${groupName}*` } else {  var Text = `*${groupName}*`}
+
+let menText = `${Text}\n*منشن من طرف ${pushname}*`
+for (let memNum of participants) {
+    
+    if( groupAdmins.includes(memNum.id) === true ) { var emo = '👑'} else { var emo = '❄️'} 
+    menText += `${emo} *@${memNum.id.split('@')[0]}*\n`
+    //members_id.push(memNum.jid)
+}
+GojoMdNx.sendMessage(m.chat,{text:menText,mentions: participants.map(a => a.id)},{quoted:m})
+break
+
             case 'منشن': {
                 if (!m.isGroup) return replay(`${mess.group}`)
                 if (!isAdmins) return replay(`${mess.admin}`)
@@ -1149,21 +1166,21 @@ let teks = ` الــمــنــشــن الــجــمــاعــي
 	    break
 
         case 'بروفايل':
-    if (isBan) return reply(mess.banned)	 			
-    if (isBanChat) return reply(mess.bangc)
+    
+    
   if (!isDarah){ addInventoriDarah(m.sender, DarahAwal) }
   if (!isInventory){ addInventori(m.sender) }
   if (!isInventoriBuruan){ addInventoriBuruan(m.sender) }
      
 
      var flob = await getBuffer(picak+'User Profile')
-     var bio= await Miku.fetchStatus(m.sender)
+     var bio= await GojoMdNx.fetchStatus(m.sender)
      var bioo = bio.status
      const adn= isAdmins? "نعم":"لا"
      
      try {
         
-        pfp=await Miku.profilePictureUrl(m.sender, 'image')
+        pfp=await GojoMdNx.profilePictureUrl(m.sender, 'image')
     
           } catch (e) {
      
@@ -1184,7 +1201,7 @@ let buttonspro = [
                 buttons: buttonspro,
                 headerType: 4
             }
-        Miku.sendMessage(m.chat,buttonMessage,{quoted:m})
+        GojoMdNx.sendMessage(m.chat,buttonMessage,{quoted:m})
         	
             break
 
@@ -1192,8 +1209,8 @@ let buttonspro = [
 
 case 'cry':{
 
-    if (isBan) return reply(mess.banned)	 			
-    if (isBanChat) return reply(mess.bangc)
+    
+    
     if (!m.isGroup) return replay(mess.grouponly)	
 	var pat = await fetchJson(`https://api.waifu.pics/sfw/${command}`)
 	try {
@@ -1220,7 +1237,7 @@ console.log(musers)
         const response = await axios.get(pat.url,  { responseType: 'arraybuffer' })
         const buffer = Buffer.from(response.data, "utf-8")
 		var fetchedgif = await GIFBufferToVideoBuffer(buffer)
-		Miku.sendMessage(m.chat,{video: fetchedgif, gifPlayback:true,mentions:ment,caption:musers},{quoted:m})
+		GojoMdNx.sendMessage(m.chat,{video: fetchedgif, gifPlayback:true,mentions:ment,caption:musers},{quoted:m})
     } catch (error) {
         console.log(error);
     }
@@ -1229,8 +1246,8 @@ break
 
 case 'nom':{
 
-    if (isBan) return reply(mess.banned)	 			
-    if (isBanChat) return reply(mess.bangc)
+    
+    
     if (!m.isGroup) return replay(mess.grouponly)	
 	var pat = await fetchJson(`https://api.waifu.pics/sfw/${command}`)
 	try {
@@ -1257,7 +1274,7 @@ console.log(musers)
         const response = await axios.get(pat.url,  { responseType: 'arraybuffer' })
         const buffer = Buffer.from(response.data, "utf-8")
 		var fetchedgif = await GIFBufferToVideoBuffer(buffer)
-		Miku.sendMessage(m.chat,{video: fetchedgif, gifPlayback:true,mentions:ment,caption:musers},{quoted:m})
+		GojoMdNx.sendMessage(m.chat,{video: fetchedgif, gifPlayback:true,mentions:ment,caption:musers},{quoted:m})
     } catch (error) {
         console.log(error);
     }
@@ -1266,8 +1283,8 @@ break
 
 case 'عناق':{
 
-    if (isBan) return reply(mess.banned)	 			
-    if (isBanChat) return reply(mess.bangc)
+    
+    
     if (!m.isGroup) return replay(mess.grouponly)	
 	var pat = await fetchJson(`https://api.waifu.pics/sfw/hug`)
 	try {
@@ -1294,7 +1311,7 @@ console.log(musers)
         const response = await axios.get(pat.url,  { responseType: 'arraybuffer' })
         const buffer = Buffer.from(response.data, "utf-8")
 		var fetchedgif = await GIFBufferToVideoBuffer(buffer)
-		Miku.sendMessage(m.chat,{video: fetchedgif, gifPlayback:true,mentions:ment,caption:musers},{quoted:m})
+		GojoMdNx.sendMessage(m.chat,{video: fetchedgif, gifPlayback:true,mentions:ment,caption:musers},{quoted:m})
     } catch (error) {
         console.log(error);
     }
@@ -1304,8 +1321,8 @@ break
 
 case 'رقص':{
 
-    if (isBan) return reply(mess.banned)	 			
-    if (isBanChat) return reply(mess.bangc)
+    
+    
     if (!m.isGroup) return replay(mess.grouponly)	
 	var pat = await fetchJson(`https://api.waifu.pics/sfw/dance`)
 	try {
@@ -1332,7 +1349,7 @@ console.log(musers)
         const response = await axios.get(pat.url,  { responseType: 'arraybuffer' })
         const buffer = Buffer.from(response.data, "utf-8")
 		var fetchedgif = await GIFBufferToVideoBuffer(buffer)
-		Miku.sendMessage(m.chat,{video: fetchedgif, gifPlayback:true,mentions:ment,caption:musers},{quoted:m})
+		GojoMdNx.sendMessage(m.chat,{video: fetchedgif, gifPlayback:true,mentions:ment,caption:musers},{quoted:m})
     } catch (error) {
         console.log(error);
     }
@@ -1341,8 +1358,8 @@ break
 
 case 'قتل': {
 
-    if (isBan) return reply(mess.banned)	 			
-    if (isBanChat) return reply(mess.bangc)
+    
+    
     if (!m.isGroup) return replay(mess.grouponly)	
 	var pat = await fetchJson(`https://api.waifu.pics/sfw/kill`)
 	try {
@@ -1369,7 +1386,7 @@ console.log(musers)
         const response = await axios.get(pat.url,  { responseType: 'arraybuffer' })
         const buffer = Buffer.from(response.data, "utf-8")
 		var fetchedgif = await GIFBufferToVideoBuffer(buffer)
-		Miku.sendMessage(m.chat,{video: fetchedgif, gifPlayback:true,mentions:ment,caption:musers},{quoted:m})
+		GojoMdNx.sendMessage(m.chat,{video: fetchedgif, gifPlayback:true,mentions:ment,caption:musers},{quoted:m})
     } catch (error) {
         console.log(error);
     }
@@ -1383,8 +1400,8 @@ case 'wink': case 'smile':
 case 'wave': case 'blush': case 'smug': case 'glomp':
 case 'cringe': case 'highfive':{
 
-    if (isBan) return reply(mess.banned)	 			
-    if (isBanChat) return reply(mess.bangc)
+    
+    
     if (!m.isGroup) return replay(mess.grouponly)	
 	var pat = await fetchJson(`https://api.waifu.pics/sfw/${command}`)
 	try {
@@ -1411,7 +1428,7 @@ console.log(musers)
         const response = await axios.get(pat.url,  { responseType: 'arraybuffer' })
         const buffer = Buffer.from(response.data, "utf-8")
 		var fetchedgif = await GIFBufferToVideoBuffer(buffer)
-		Miku.sendMessage(m.chat,{video: fetchedgif, gifPlayback:true,mentions:ment,caption:musers},{quoted:m})
+		GojoMdNx.sendMessage(m.chat,{video: fetchedgif, gifPlayback:true,mentions:ment,caption:musers},{quoted:m})
     } catch (error) {
         console.log(error);
     }
@@ -1440,8 +1457,8 @@ https://chat.whatsapp.com/KZmt3H89QxQHzUKdr5dbN0`)
 break
 
 case 'خلفية': {
-    if (isBan) return reply(mess.banned)	 			
-    if (isBanChat) return reply(mess.bangc)
+    
+    
     if (!args.join(" ")) return reply("اكتب اسم انمي او شخصية بالانجليزي")
     const { AnimeWallpaper } =require("anime-wallpaper")
     const wall = new AnimeWallpaper();
@@ -1460,23 +1477,23 @@ case 'خلفية': {
                 buttons: buttons,
                 headerType: 4
             }
-            Miku.sendMessage(m.chat, buttonMessage, { quoted: m })
+            GojoMdNx.sendMessage(m.chat, buttonMessage, { quoted: m })
         }
         break
 
         case 'ايموجي': {
-            if (isBan) return reply(mess.banned)	 			
-        if (isBanChat) return reply(mess.bangc)
+            
+        
         if (!args.join(" ")) return reply('وين الايموجي ؟')
         emoji.get(args.join(" ")).then(async(emoji) => {
-        let mese = await Miku.sendMessage(m.chat, {image:{url:emoji.images[4].url}, caption: `تمم`}, {quoted:m})
+        let mese = await GojoMdNx.sendMessage(m.chat, {image:{url:emoji.images[4].url}, caption: `تمم`}, {quoted:m})
         })
         }
         break
 
         case 'احذف': {
-            if (isBan) return reply(mess.banned)	 			
-         if (isBanChat) return reply(mess.bangc)
+            
+         
          if (!isBotAdmins) return replay(mess.botadmin)
          if (!isAdmins && !isCreator) return replay(mess.useradmin)
          if (!m.quoted) return reply('بااكاا وين الرسالة ؟')
@@ -1489,13 +1506,13 @@ case 'خلفية': {
             participant: m.quoted.sender
         }
         
-        await Miku.sendMessage(m.chat, { delete: key })
+        await GojoMdNx.sendMessage(m.chat, { delete: key })
          }
          break
 
          case 'عكس': {
-            if (isBan) return reply(mess.banned)	 			
-         if (isBanChat) return reply(mess.bangc)
+            
+         
          if (args.length < 1) return replay(`مثال:\n${prefix}عكس جيرايا`)
          quere = args.join(" ")
          flipe = quere.split('').reverse().join('')
@@ -1504,8 +1521,8 @@ case 'خلفية': {
          break
 
          case 'احسب':{
-            if (isBan) return reply(mess.banned)	 			
-         if (isBanChat) return reply(mess.bangc)
+            
+         
          if (args.length < 1) return reply(`*مثال :*\n${prefix}احسب 2*5\n\n`)
          let qsd = args.join(" ")
          if (typeof mathjs.evaluate(qsd) !== 'number') {
@@ -1515,6 +1532,110 @@ case 'خلفية': {
          }
          }
          break
+
+         case 'akida':{
+            
+            
+              
+         const helpmenu = `Konichiwa *${pushname}* Senpai,
+        
+        I am *Miku Nakano*, a bot developed by *Fantox*.
+        
+        🔰 My prefix is:  ${prefix}
+        
+        Here's the list of my Commands.
+         
+        
+        
+         *━━━━━━〈  🎆 Core 🎆  〉━━━━━━*
+        
+        stalk, profile, help, delete, deleteall, listgc, listpc, welcome, support, repo, script 
+         
+         *━━━━━━〈  🎀 Owner 🎀  〉━━━━━━*
+        
+        self, public, ban, bangroup, bye, join, bye, block, unblock, broadcast 
+        
+         *━━━━━━〈  ⭕ Group ⭕  〉━━━━━━*
+        
+        promote, demote, revoke, remove, tagall, hidetag, groupsetting, grouplink, setgcpp, setname, setdesc, group, nsfw 
+        
+         *━━━━━━〈  ➰ Anti Link ➰  〉━━━━━━*
+         
+        antilinkgc, antilinktg, antilinktt, antilinkytch, antilinkytvid, antilinkig, antilinkfb, antilinktwit, antilinkall, antiwame
+        
+         *━━━━━━〈  🔍 Search 🔍  〉━━━━━━*
+        
+        play, song, yts, lyrics, google, gimage, pinterest, image, movie, wallpaper, searchgc, happymod, wikimedia, ringtone, anime, animestory, manga, ringtone   
+        
+         *━━━━━━〈  🔰 Convert 🔰  〉━━━━━━*
+        
+        sticker, toimg, tovideo, togif , steal, stickermeme, emojimix, tourl, tomp3, toaudio
+        
+         *━━━━━━〈  🔉 Audio 🔉  〉━━━━━━*
+        
+        bass, tempo, blown, deep, earrape, fast, fat, nightcore, reverse, robot, slow, squirrel
+        
+         *━━━━━━〈  📍 Reactions 📍  〉━━━━━━*
+        
+        bonk, cry, bully, cuddle, hug, kiss, lick, pat, smug, yeet, blush, smile, wave, highfive, handhold, nom, glomp, bite, slap, kill, happy, wink, poke, dance, cringe
+        
+         *━━━━━━〈  🌌 Downloader 🌌  〉━━━━━━*
+        
+        play, ytmp3, ytmp4, ytvideo, mediafire, instagram, igtv, facebook, fbmp3, twitter, twittermp3, tiktok, tiktokaudio, tiktoknowm, mediafire  
+        
+         *━━━━━━〈  🈴 Weeb 🈴  〉━━━━━━*
+        
+        crosplay, waifu, loli, neko, ppcouple, feed, foxgirl, feed, meow, tickle, wallpaper, coffee, animenom, waifu3, neko2, feed, meow, tickle, migumin, awoo, animewallpaper2, anime, manga
+        
+         *━━━━━━〈  ♨️ Informative ♨️  〉━━━━━━*
+        
+        animequote, quote, covid, earthquake, wiki
+        
+         *━━━━━━〈  🎗 Others 🎗  〉━━━━━━*
+        
+        stickermeme, quotes, darkjoke 
+        
+         *━━━━━━〈  🎐 Fun 🎐  〉━━━━━━*
+        
+        reaction, truth, dare, couple, soulmate, handsomecheck, beautifulcheck, awesomecheck, greatcheck, gaycheck, cutecheck, lesbiancheck, hornycheck, prettycheck, lovelycheck, uglycheck, charactercheck
+        
+         *━━━━━━〈  🪁 Essentials 🪁  〉━━━━━━*
+        
+        translate, fliptext, toletter
+        
+         *━━━━━━〈  💥 NSFW 💥  〉━━━━━━*
+        
+        🍁 Type " *${prefix}nsfw* " then enable NSFW (Admin only!) 
+        
+        🍁 Then type " *${prefix}nsfwmenu* " to get full list of NSFW commands.
+        
+        
+        
+        
+        
+         『  *${global.BotName}*  』
+         Powered by: *Fantox*
+        
+         🔰 To use any of these commands type 
+         " *${prefix}<Command name>* ".
+         
+         🔰 To get Support Group link type " *${prefix}support* ".
+        
+         🔰 Type " *${prefix}help* " to get full command list.`
+             
+         let buttonshelpm = [
+            {buttonId: `-owner`, buttonText: {displayText: 'Bot Owner'}, type: 1}
+            ]
+                        let buttonMessage = {
+                            file: GojoMdNx.sendMessage(m.chat,{video:fs.readFileSync('./system/miku2.mp4'),gifPlayback:true,caption:helpmenu},{quoted:m}),
+                            caption: helpmenu,
+                            footer: `${BotName}`,
+                            buttons: buttonshelpm,
+                            headerType: 4
+                        }
+                    GojoMdNx.sendMessage(m.chat, buttonMessage,{ quoted:m })
+                        }
+        break
 
 		//Backup, for example, the video above doesn't come out\\
 
