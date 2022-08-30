@@ -486,8 +486,8 @@ ${isWin ? `@${winner.split('@')[0]} فاز / ت` : isTie ? `انتهت` : `دو�
             let reason = user.afkReason || ''
             reply(`
 السلام عليكم، انا البوت.
-            الشخص الذي منشنته مختفي ${reason ? 'بسبب :' + reason : 'بيرجع قريب'}
-            ذهب قبل : ${clockString(new Date - afkTime)}
+الشخص الذي منشنته مختفي ${reason ? 'بسبب :' + reason : 'بيرجع قريب'}
+ذهب قبل : ${clockString(new Date - afkTime)}
 `.trim())
         }
 
@@ -514,7 +514,7 @@ switch(command) {
         case 'اكس_او': {
             let TicTacToe = require("./lib/tictactoe")
             this.game = this.game ? this.game : {}
-            if (Object.values(this.game).find(room => room.id.startsWith('tictactoe') && [room.game.playerX, room.game.playerO].includes(m.sender))) return replay(`You Are Still In The Game`)
+            if (Object.values(this.game).find(room => room.id.startsWith('tictactoe') && [room.game.playerX, room.game.playerO].includes(m.sender))) return replay(`انت فاللعبة حاليا`)
             let room = Object.values(this.game).find(room => room.state === 'WAITING' && (text ? room.name === text : true))
             if (room) {
             reply('وجدنا اللاعب')
@@ -544,7 +544,7 @@ ${arr.slice(6).join('')}
 
 دورك @${room.game.currentTurn.split('@')[0]}
 
-اكتب *استسلم* للاستسلام`
+`
             if (room.x !== room.o) await GojoMdNx.sendText(room.x, str, m, { mentions: parseMention(str) } )
             await GojoMdNx.sendText(room.o, str, m, { mentions: parseMention(str) } )
             } else {
@@ -556,7 +556,7 @@ ${arr.slice(6).join('')}
             state: 'WAITING'
             }
             if (text) room.name = text
-            reply('ننتضر يجي لاعب' + (text ? ` Type The Command Below ${prefix}${command} ${text}` : ''))
+            reply('ننتضر يجي لاعب' + (text ? `  ${prefix}${command} ${text}` : ''))
             this.game[room.id] = room
             }
             }
@@ -584,114 +584,12 @@ ${arr.slice(6).join('')}
                          }
                          break
 
-	    case 'family100': {
-                if ('family100'+m.chat in _family100) {
-                    reply('There Are Still Unfinished Sessions!')
-                    reply(false)
-                }
-                let anu = await fetchJson('https://raw.githubusercontent.com/BochilTeam/database/master/games/family100.json')
-                let random = anu[Math.floor(Math.random() * anu.length)]
-                let hasil = `*Answer The Following Questions :*\n${random.soal}\n\nThere Is *${random.jawaban.length}* Answer ${random.jawaban.find(v => v.includes(' ')) ? `(Some Answers Have Spaces)` : ''}`.trim()
-                _family100['family100'+m.chat] = {
-                    id: 'family100'+m.chat,
-                    pesan: await GojoMdNx.sendText(m.chat, hasil, m),
-                    ...random,
-                    terjawab: Array.from(random.jawaban, () => false),
-                    hadiah: 6,
-                }
-            }
             break
             case 'قل':
             if (!m.quoted && !text) return replay(`اكتب وش تبي اقول ${prefix + command}`)
             ter = command[1].toLowerCase()
             tex = m.quoted ? m.quoted.text ? m.quoted.text : q ? q : m.text : q ? q : m.text
             reply(tex.replace(/[aiueo]/g, ter).replace(/[AIUEO]/g, ter.toUpperCase()))
-            break
-            case 'guess': {
-                if (!text) return replay(`Example : ${prefix + command} song\n\nOption : \n1. music\n2. picture (indo)\n3. word\n4. sentence\n5. lyrics (indo)\n6. blank (indo)`)
-                if (args[0] === "song") {
-                    if (tebaklagu.hasOwnProperty(m.sender.split('@')[0])) return replay(`There Are Still Unfinished Sessions`)
-                    let anu = await fetchJson('https://fatiharridho.github.io/tebaklagu.json')
-                    let result = anu[Math.floor(Math.random() * anu.length)]
-                    let msg = await GojoMdNx.sendMessage(m.chat, { audio: { url: result.link_song }, mimetype: 'audio/mpeg' }, { quoted: m })
-                    GojoMdNx.sendText(m.chat, `What Is The Name Of This Song?\n\nArtist : ${result.artist}\nTime : 60 seconds`, msg).then(() => {
-                    tebaklagu[m.sender.split('@')[0]] = result.jawaban.toLowerCase()
-                    })
-                    await sleep(60000)
-                    if (tebaklagu.hasOwnProperty(m.sender.split('@')[0])) {
-                    console.log("Answer: " + result.jawaban)
-                    GojoMdNx.sendButtonText(m.chat, [{ buttonId: 'guess song', buttonText: { displayText: 'Guess The Song' }, type: 1 }], `Time Has Run Out\nAnswer:  ${tebaklagu[m.sender.split('@')[0]]}\n\nWant To Play? Press The Button Below`, GojoMdNx.user.name, m)
-                    delete tebaklagu[m.sender.split('@')[0]]
-                    }
-                } else if (args[0] === 'picture') {
-                    if (tebakgambar.hasOwnProperty(m.sender.split('@')[0])) return replay(`There Are Still Unfinished Sessions!`)
-                    let anu = await fetchJson('https://raw.githubusercontent.com/BochilTeam/database/master/games/tebakgambar.json')
-                    let result = anu[Math.floor(Math.random() * anu.length)]
-                    GojoMdNx.sendImage(m.chat, result.img, `Please Answer The Questions Above\n\nDescription : ${result.deskripsi}\nTime : 60 seconds`, m).then(() => {
-                    tebakgambar[m.sender.split('@')[0]] = result.jawaban.toLowerCase()
-                    })
-                    await sleep(60000)
-                    if (tebakgambar.hasOwnProperty(m.sender.split('@')[0])) {
-                    console.log("Answer: " + result.jawaban)
-                    GojoMdNx.sendButtonText(m.chat, [{ buttonId: 'guess picture', buttonText: { displayText: 'Guess The Picture' }, type: 1 }], `Time Has Run Out\nAnswer:  ${tebakgambar[m.sender.split('@')[0]]}\n\nWant To Play Again? PressThe Button Below`, GojoMdNx.user.name, m)
-                    delete tebakgambar[m.sender.split('@')[0]]
-                    }
-                } else if (args[0] === 'word') {
-                    if (tebakkata.hasOwnProperty(m.sender.split('@')[0])) return replay(`There Are Still Unfinished Sessions!`)
-                    let anu = await fetchJson('https://raw.githubusercontent.com/nexusnw/fungames/main/GuessTheWord.js')
-                    let result = anu[Math.floor(Math.random() * anu.length)]
-                    GojoMdNx.sendText(m.chat, `Please Answer The Following Question\n\n${result.soal}\nTime : 60 seconds`, m).then(() => {
-                    tebakkata[m.sender.split('@')[0]] = result.jawaban.toLowerCase()
-                    })
-                    await sleep(60000)
-                    if (tebakkata.hasOwnProperty(m.sender.split('@')[0])) {
-                    console.log("Answer: " + result.jawaban)
-                    GojoMdNx.sendButtonText(m.chat, [{ buttonId: 'guess word', buttonText: { displayText: 'Guess The Word' }, type: 1 }], `Time Out\nAnswer:  ${tebakkata[m.sender.split('@')[0]]}\n\nWant To Play Again? PressThe Button Below`, GojoMdNx.user.name, m)
-                    delete tebakkata[m.sender.split('@')[0]]
-                    }
-                } else if (args[0] === 'sentence') {
-                    if (tebakkalimat.hasOwnProperty(m.sender.split('@')[0])) return replay(`There Are Still Unfinished Sessions!`)
-                    let anu = await fetchJson('https://raw.githubusercontent.com/nexusnw/fungames/main/GuessTheSentence.js')
-                    let result = anu[Math.floor(Math.random() * anu.length)]
-                    GojoMdNx.sendText(m.chat, `Please Answer The Following Question\n\n${result.soal}\nTime : 60 seconds`, m).then(() => {
-                    tebakkalimat[m.sender.split('@')[0]] = result.jawaban.toLowerCase()
-                    })
-                    await sleep(60000)
-                    if (tebakkalimat.hasOwnProperty(m.sender.split('@')[0])) {
-                    console.log("Answer: " + result.jawaban)
-                    GojoMdNx.sendButtonText(m.chat, [{ buttonId: 'guess sentence', buttonText: { displayText: 'Guess The Sentence' }, type: 1 }], `Time Out\nAnswer:  ${tebakkalimat[m.sender.split('@')[0]]}\n\nWant To Play Again? PressThe Button Below`, GojoMdNx.user.name, m)
-                    delete tebakkalimat[m.sender.split('@')[0]]
-                    }
-                } else if (args[0] === 'lyrics') {
-                    if (tebaklirik.hasOwnProperty(m.sender.split('@')[0])) return replay(`There Are Still Unfinished Sessions!`)
-                    let anu = await fetchJson('https://raw.githubusercontent.com/BochilTeam/database/master/games/tebaklirik.json')
-                    let result = anu[Math.floor(Math.random() * anu.length)]
-                    GojoMdNx.sendText(m.chat, `These Are The Lyrics Of Which Song? : *${result.soal}*?\nTime : 60 seconds`, m).then(() => {
-                    tebaklirik[m.sender.split('@')[0]] = result.jawaban.toLowerCase()
-                    })
-                    await sleep(60000)
-                    if (tebaklirik.hasOwnProperty(m.sender.split('@')[0])) {
-                    console.log("Answer: " + result.jawaban)
-                    GojoMdNx.sendButtonText(m.chat, [{ buttonId: 'guess lyrics', buttonText: { displayText: 'Guess The Lyrics' }, type: 1 }], `Time Out\nAnswer:  ${tebaklirik[m.sender.split('@')[0]]}\n\Want To Play Again? PressThe Button Below`, GojoMdNx.user.name, m)
-                    delete tebaklirik[m.sender.split('@')[0]]
-                    }
-                } else if (args[0] === 'blank') {
-                    if (caklontong.hasOwnProperty(m.sender.split('@')[0])) return replay(`There Are Still Unfinished Sessions!`)
-                    let anu = await fetchJson('https://raw.githubusercontent.com/BochilTeam/database/master/games/caklontong.json')
-                    let result = anu[Math.floor(Math.random() * anu.length)]
-                    GojoMdNx.sendText(m.chat, `*Answer The Following Questions :*\n${result.soal}*\nTime : 60 seconds`, m).then(() => {
-                    caklontong[m.sender.split('@')[0]] = result.jawaban.toLowerCase()
-		    caklontong_desk[m.sender.split('@')[0]] = result.deskripsi
-                    })
-                    await sleep(60000)
-                    if (caklontong.hasOwnProperty(m.sender.split('@')[0])) {
-                    console.log("Answer: " + result.jawaban)
-                    GojoMdNx.sendButtonText(m.chat, [{ buttonId: 'guess blank', buttonText: { displayText: 'Guess The Blank' }, type: 1 }], `Time Out\nAnswer:  ${caklontong[m.sender.split('@')[0]]}\nDescription : ${caklontong_desk[m.sender.split('@')[0]]}\n\Want To Play Again? PressThe Button Below`, GojoMdNx.user.name, m)
-                    delete caklontong[m.sender.split('@')[0]]
-		    delete caklontong_desk[m.sender.split('@')[0]]
-                    }
-                }
-            }
             break
 		
 		
@@ -714,20 +612,21 @@ ${arr.slice(6).join('')}
 
 
             case 'شبيهي': {
-                if (!m.isGroup) return replay(`${mess.group}`)
-                let member = participants.map(u => u.id)
-                let me = m.sender
-                let jodoh = member[Math.floor(Math.random() * member.length)]
-                let jawab = `شبيهك هو
-    
-    @${me.split('@')[0]} 👫 @${jodoh.split('@')[0]}`
-                let ments = [me, jodoh]
-                let buttons = [
-                            { type: 1 }
-                        ]
-                        await GojoMdNx.sendButtonText(m.chat, buttons, jawab, GojoMdNx.user.name, m, {mentions: ments})
-                }
-                break
+                if (isBan) return reply(mess.banned)
+                if (isBanChat) return reply(mess.bangc)
+            if (!m.isGroup) return replay(`${mess.grouponly}`)
+            let member = participants.map(u => u.id)
+            let me = m.sender
+            let jodoh = member[Math.floor(Math.random() * member.length)]
+            let jawab = `👫 شبيهك هو
+            @${me.split('@')[0]} 👀 @${jodoh.split('@')[0]}`
+            let ments = [me, jodoh]
+            let buttons = [
+            { buttonId: '👀', buttonText: { displayText: 'لا اتفق' }, type: 1 }
+            ]
+            await Miku.sendButtonText(m.chat, buttons, jawab, Miku.user.name, m, {mentions: ments})
+            }
+            break
             case 'هل':
 					const apa = ['نعم','لا','شرايك انت ؟','اذلف مدري 🗿','هو شوف على حسب 🐧','يمكن','مدري صراحة','اتوقعععع يب 🐧🤣']
 					const kah = apa[Math.floor(Math.random() * apa.length)]
@@ -766,7 +665,7 @@ GojoMdNx.sendMessage(from, { text: `تشبيك : ${q}\n نسبة الحب : *${t
                if (!isCreator) return replay(`${mess.owner}`)
           global.packname = text.split("|")[0]
           global.author = text.split("|")[1]
-          reply(`Eتم تغيير الحقوق`)
+          reply(`تم تغيير الحقوق`)
             }
             break
 	case 'طرد': {
@@ -774,7 +673,7 @@ GojoMdNx.sendMessage(from, { text: `تشبيك : ${q}\n نسبة الحب : *${t
                 if (!isBotAdmins) return replay(`${mess.botAdmin}`)
                 if (!isAdmins) return replay(`${mess.admin}`)
 		let users = m.mentionedJid[0] ? m.mentionedJid[0] : m.quoted ? m.quoted.sender : text.replace(/[^0-9]/g, '')+'@s.whatsapp.net'
-		await GojoMdNx.groupParticipantsUpdate(m.chat, [users], 'remove').then((res) => reply(jsonformat(res))).catch((err) => reply(jsonformat(err)))
+		await GojoMdNx.groupParticipantsUpdate(m.chat, [users], 'remove')
 	}
 	break
 	case 'دخل': {
@@ -782,7 +681,7 @@ GojoMdNx.sendMessage(from, { text: `تشبيك : ${q}\n نسبة الحب : *${t
                 if (!isBotAdmins) return replay(`${mess.botAdmin}`)
                 if (!isAdmins) return replay(`${mess.admin}`)
 		let users = m.quoted ? m.quoted.sender : text.replace(/[^0-9]/g, '')+'@s.whatsapp.net'
-		await GojoMdNx.groupParticipantsUpdate(m.chat, [users], 'add').then((res) => reply(jsonformat(res))).catch((err) => reply(jsonformat(err)))
+		await GojoMdNx.groupParticipantsUpdate(m.chat, [users], 'add')
 	}
 	break
 	case 'ترقية': {
@@ -822,7 +721,7 @@ GojoMdNx.sendMessage(from, { text: `تشبيك : ${q}\n نسبة الحب : *${t
             }
             break
 
-            case '11ملصقي': case '11زرف': {
+            case 'ملصقي': case 'زرف': {
              if (!args.join(" ")) return reply(`مثال :\nملصقي ${global.author}|${global.packname}`)
              const swn = args.join(" ")
              const pcknm = swn.split("|")[0];
@@ -1249,8 +1148,373 @@ let teks = ` الــمــنــشــن الــجــمــاعــي
             }
 	    break
 
+        case 'بروفايل':
+    if (isBan) return reply(mess.banned)	 			
+    if (isBanChat) return reply(mess.bangc)
+  if (!isDarah){ addInventoriDarah(m.sender, DarahAwal) }
+  if (!isInventory){ addInventori(m.sender) }
+  if (!isInventoriBuruan){ addInventoriBuruan(m.sender) }
+     
+
+     var flob = await getBuffer(picak+'User Profile')
+     var bio= await Miku.fetchStatus(m.sender)
+     var bioo = bio.status
+     const adn= isAdmins? "نعم":"لا"
+     
+     try {
+        
+        pfp=await Miku.profilePictureUrl(m.sender, 'image')
+    
+          } catch (e) {
+     
+      pfp ='https://i.ibb.co/4WH9MHJ/th.jpg'
+    }
+
+     const profilexx = `*「  معلومات البروفايل  」*\n\n*المنشن* : ${pushname}\n*البايو* : ${bioo}\n*مشرف فالقروب؟* : ${adn}\n*لفل* : ${levelMenu}\n*اكس بي* : ${xpMenu} مستمر ل ${reqXp}\n*مستوى* : ${role}`
+ 
 
 
+let buttonspro = [
+    {buttonId: `شبيهي`, buttonText: {displayText: 'شبيهي'}, type: 1}
+    ]
+            let buttonMessage = {
+                image: { url: pfp },
+                caption: profilexx,
+                footer: `${BotName}`,
+                buttons: buttonspro,
+                headerType: 4
+            }
+        Miku.sendMessage(m.chat,buttonMessage,{quoted:m})
+        	
+            break
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+case 'cry':{
+
+    if (isBan) return reply(mess.banned)	 			
+    if (isBanChat) return reply(mess.bangc)
+    if (!m.isGroup) return replay(mess.grouponly)	
+	var pat = await fetchJson(`https://api.waifu.pics/sfw/${command}`)
+	try {
+		let messsender = m.sender
+let musers=``
+try {
+users = m.mentionedJid[0] ? m.mentionedJid[0] : m.quoted ? m.quoted.sender : text.replace(/[^0-9]/g, '')+'@s.whatsapp.net'
+
+ ment=[messsender,users]
+} catch {
+	users == "none"
+	 ment=[messsender,m.sender]
+}
+if(users == "none"){
+     musers =`@${m.sender.split("@")[0]} ${command}ed with themself!`
+     console.log(musers)
+
+} else {
+const rcpp =`@${users.split("@"[0])}`
+ musers= `@${m.sender.split("@")[0]} ${command}ed with @${users.split("@")[0]} `
+
+console.log(musers)
+}
+        const response = await axios.get(pat.url,  { responseType: 'arraybuffer' })
+        const buffer = Buffer.from(response.data, "utf-8")
+		var fetchedgif = await GIFBufferToVideoBuffer(buffer)
+		Miku.sendMessage(m.chat,{video: fetchedgif, gifPlayback:true,mentions:ment,caption:musers},{quoted:m})
+    } catch (error) {
+        console.log(error);
+    }
+}
+break
+
+case 'nom':{
+
+    if (isBan) return reply(mess.banned)	 			
+    if (isBanChat) return reply(mess.bangc)
+    if (!m.isGroup) return replay(mess.grouponly)	
+	var pat = await fetchJson(`https://api.waifu.pics/sfw/${command}`)
+	try {
+		let messsender = m.sender
+let musers=``
+try {
+users = m.mentionedJid[0] ? m.mentionedJid[0] : m.quoted ? m.quoted.sender : text.replace(/[^0-9]/g, '')+'@s.whatsapp.net'
+
+ ment=[messsender,users]
+} catch {
+	users == "none"
+	 ment=[messsender,m.sender]
+}
+if(users == "none"){
+     musers =`@${m.sender.split("@")[0]} is eating with themself!`
+     console.log(musers)
+
+} else {
+const rcpp =`@${users.split("@"[0])}`
+ musers= `@${m.sender.split("@")[0]} is eating with @${users.split("@")[0]} `
+
+console.log(musers)
+}
+        const response = await axios.get(pat.url,  { responseType: 'arraybuffer' })
+        const buffer = Buffer.from(response.data, "utf-8")
+		var fetchedgif = await GIFBufferToVideoBuffer(buffer)
+		Miku.sendMessage(m.chat,{video: fetchedgif, gifPlayback:true,mentions:ment,caption:musers},{quoted:m})
+    } catch (error) {
+        console.log(error);
+    }
+}
+break
+
+case 'عناق':{
+
+    if (isBan) return reply(mess.banned)	 			
+    if (isBanChat) return reply(mess.bangc)
+    if (!m.isGroup) return replay(mess.grouponly)	
+	var pat = await fetchJson(`https://api.waifu.pics/sfw/hug`)
+	try {
+		let messsender = m.sender
+let musers=``
+try {
+users = m.mentionedJid[0] ? m.mentionedJid[0] : m.quoted ? m.quoted.sender : text.replace(/[^0-9]/g, '')+'@s.whatsapp.net'
+
+ ment=[messsender,users]
+} catch {
+	users == "none"
+	 ment=[messsender,m.sender]
+}
+if(users == "none"){
+     musers =`@${m.sender.split("@")[0]} يعانق الريح 😞👎`
+     console.log(musers)
+
+} else {
+const rcpp =`@${users.split("@"[0])}`
+ musers= `@${m.sender.split("@")[0]} يعانق @${users.split("@")[0]} `
+
+console.log(musers)
+}
+        const response = await axios.get(pat.url,  { responseType: 'arraybuffer' })
+        const buffer = Buffer.from(response.data, "utf-8")
+		var fetchedgif = await GIFBufferToVideoBuffer(buffer)
+		Miku.sendMessage(m.chat,{video: fetchedgif, gifPlayback:true,mentions:ment,caption:musers},{quoted:m})
+    } catch (error) {
+        console.log(error);
+    }
+}
+break
+
+
+case 'رقص':{
+
+    if (isBan) return reply(mess.banned)	 			
+    if (isBanChat) return reply(mess.bangc)
+    if (!m.isGroup) return replay(mess.grouponly)	
+	var pat = await fetchJson(`https://api.waifu.pics/sfw/dance`)
+	try {
+		let messsender = m.sender
+let musers=``
+try {
+users = m.mentionedJid[0] ? m.mentionedJid[0] : m.quoted ? m.quoted.sender : text.replace(/[^0-9]/g, '')+'@s.whatsapp.net'
+
+ ment=[messsender,users]
+} catch {
+	users == "none"
+	 ment=[messsender,m.sender]
+}
+if(users == "none"){
+     musers =`@${m.sender.split("@")[0]} يرقص وحيدا`
+     console.log(musers)
+
+} else {
+const rcpp =`@${users.split("@"[0])}`
+ musers= `@${m.sender.split("@")[0]} يرقص مع @${users.split("@")[0]} `
+
+console.log(musers)
+}
+        const response = await axios.get(pat.url,  { responseType: 'arraybuffer' })
+        const buffer = Buffer.from(response.data, "utf-8")
+		var fetchedgif = await GIFBufferToVideoBuffer(buffer)
+		Miku.sendMessage(m.chat,{video: fetchedgif, gifPlayback:true,mentions:ment,caption:musers},{quoted:m})
+    } catch (error) {
+        console.log(error);
+    }
+}
+break
+
+case 'قتل': {
+
+    if (isBan) return reply(mess.banned)	 			
+    if (isBanChat) return reply(mess.bangc)
+    if (!m.isGroup) return replay(mess.grouponly)	
+	var pat = await fetchJson(`https://api.waifu.pics/sfw/kill`)
+	try {
+		let messsender = m.sender
+let musers=``
+try {
+users = m.mentionedJid[0] ? m.mentionedJid[0] : m.quoted ? m.quoted.sender : text.replace(/[^0-9]/g, '')+'@s.whatsapp.net'
+
+ ment=[messsender,users]
+} catch {
+	users == "none"
+	 ment=[messsender,m.sender]
+}
+if(users == "none"){
+     musers =`@${m.sender.split("@")[0]} يقتل نفسه`
+     console.log(musers)
+
+} else {
+const rcpp =`@${users.split("@"[0])}`
+ musers= `@${m.sender.split("@")[0]} يقتل  @${users.split("@")[0]} `
+
+console.log(musers)
+}
+        const response = await axios.get(pat.url,  { responseType: 'arraybuffer' })
+        const buffer = Buffer.from(response.data, "utf-8")
+		var fetchedgif = await GIFBufferToVideoBuffer(buffer)
+		Miku.sendMessage(m.chat,{video: fetchedgif, gifPlayback:true,mentions:ment,caption:musers},{quoted:m})
+    } catch (error) {
+        console.log(error);
+    }
+}
+break
+
+
+
+case 'yeet':
+case 'wink': case 'smile':
+case 'wave': case 'blush': case 'smug': case 'glomp':
+case 'cringe': case 'highfive':{
+
+    if (isBan) return reply(mess.banned)	 			
+    if (isBanChat) return reply(mess.bangc)
+    if (!m.isGroup) return replay(mess.grouponly)	
+	var pat = await fetchJson(`https://api.waifu.pics/sfw/${command}`)
+	try {
+		let messsender = m.sender
+let musers=``
+try {
+users = m.mentionedJid[0] ? m.mentionedJid[0] : m.quoted ? m.quoted.sender : text.replace(/[^0-9]/g, '')+'@s.whatsapp.net'
+
+ ment=[messsender,users]
+} catch {
+	users == "none"
+	 ment=[messsender,m.sender]
+}
+if(users == "none"){
+     musers =`@${m.sender.split("@")[0]} ${command}ed at themself!`
+     console.log(musers)
+
+} else {
+const rcpp =`@${users.split("@"[0])}`
+ musers= `@${m.sender.split("@")[0]} ${command}ed at @${users.split("@")[0]} `
+
+console.log(musers)
+}
+        const response = await axios.get(pat.url,  { responseType: 'arraybuffer' })
+        const buffer = Buffer.from(response.data, "utf-8")
+		var fetchedgif = await GIFBufferToVideoBuffer(buffer)
+		Miku.sendMessage(m.chat,{video: fetchedgif, gifPlayback:true,mentions:ment,caption:musers},{quoted:m})
+    } catch (error) {
+        console.log(error);
+    }
+}
+break
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+case 'مساعدة':
+    
+    reply(`*ادخل قروب البوت للمساعدة:* https://chat.whatsapp.com/KLPZQqWM8fs6UCwpYCRVNs`)
+    break
+
+    case 'قروباتي':
+if (isBan) return reply(mess.ban)	 			
+if (isBanChat) return reply(mess.banChat)
+reply(` يمكنك/ي الدخول لاي قروب يعجبك/ي
+
+*قروب البوت*
+https://chat.whatsapp.com/KLPZQqWM8fs6UCwpYCRVNs
+
+*قروب الانمي مون*
+https://chat.whatsapp.com/Ccu4raDkkKI3Ro2dUpqgCo
+
+*قروب الانمي ريڤن*
+https://chat.whatsapp.com/KZmt3H89QxQHzUKdr5dbN0`)
+break
+
+case 'خلفية': {
+    if (isBan) return reply(mess.banned)	 			
+    if (isBanChat) return reply(mess.bangc)
+    if (!args.join(" ")) return reply("اكتب اسم انمي او شخصية بالانجليزي")
+    const { AnimeWallpaper } =require("anime-wallpaper")
+    const wall = new AnimeWallpaper();
+    const pages = [1,2,3,4];
+    const random=pages[Math.floor(Math.random() * pages.length)]
+            const wallpaper = await wall .getAnimeWall4({ title: q, type: "sfw", page: pages }).catch(() => null);
+            const i = Math.floor(Math.random() * wallpaper.length);
+            
+    let buttons = [
+                {buttonId: `-خلفية ${args.join(" ")}`, buttonText: {displayText: 'التالي'}, type: 1}
+            ]
+            let buttonMessage = {
+                image: {url:wallpaper[i].image},
+                caption: `*الاسم:* ${q}`,
+                footer: `${BotName}`,
+                buttons: buttons,
+                headerType: 4
+            }
+            Miku.sendMessage(m.chat, buttonMessage, { quoted: m })
+        }
+        break
+
+        case 'ايموجي': {
+            if (isBan) return reply(mess.banned)	 			
+        if (isBanChat) return reply(mess.bangc)
+        if (!args.join(" ")) return reply('وين الايموجي ؟')
+        emoji.get(args.join(" ")).then(async(emoji) => {
+        let mese = await Miku.sendMessage(m.chat, {image:{url:emoji.images[4].url}, caption: `تمم`}, {quoted:m})
+        })
+        }
+        break
+
+        case 'احذف': {
+            if (isBan) return reply(mess.banned)	 			
+         if (isBanChat) return reply(mess.bangc)
+         if (!isBotAdmins) return replay(mess.botadmin)
+         if (!isAdmins && !isCreator) return replay(mess.useradmin)
+         if (!m.quoted) return reply('بااكاا وين الرسالة ؟')
+         let { chat, fromMe, id} = m.quoted
+        
+        const key = {
+            remoteJid: m.chat,
+            fromMe: false,
+            id: m.quoted.id,
+            participant: m.quoted.sender
+        }
+        
+        await Miku.sendMessage(m.chat, { delete: key })
+         }
+         break
+
+         case 'عكس': {
+            if (isBan) return reply(mess.banned)	 			
+         if (isBanChat) return reply(mess.bangc)
+         if (args.length < 1) return replay(`مثال:\n${prefix}عكس جيرايا`)
+         quere = args.join(" ")
+         flipe = quere.split('').reverse().join('')
+         replay(`\`\`\`「  عكس الكلمات  」\`\`\`\n*الاصلي :*\n${quere}\n*المعكوس :*\n${flipe}`)
+         }
+         break
+
+         case 'احسب':{
+            if (isBan) return reply(mess.banned)	 			
+         if (isBanChat) return reply(mess.bangc)
+         if (args.length < 1) return reply(`*مثال :*\n${prefix}احسب 2*5\n\n`)
+         let qsd = args.join(" ")
+         if (typeof mathjs.evaluate(qsd) !== 'number') {
+         reply('خطأ')
+         } else {
+         reply(`\`\`\`「 نتائج الحساب 」\`\`\`\n\n*العملية :* ${qsd}\n*الجواب :* ${mathjs.evaluate(qsd.replace(/×/g, "*").replace(/x/g, "*").replace(/÷/g, "/"))}`)
+         }
+         }
+         break
 
 		//Backup, for example, the video above doesn't come out\\
 
