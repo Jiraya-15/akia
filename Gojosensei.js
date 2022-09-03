@@ -411,51 +411,51 @@ ${Array.from(room.jawaban, (jawaban, index) => {
         }
         
         //TicTacToe\\
-   this.game = this.game ? this.game : {}
-   let room = Object.values(this.game).find(room => room.id && room.game && room.state && room.id.startsWith('tictactoe') && [room.game.playerX, room.game.playerO].includes(m.sender) && room.state == 'PLAYING')
-   if (room) {
-   let ok
-   let isWin = !1
-   let isTie = !1
-   let issurrender = !1
-   //reply(`[DEBUG]\n${parseInt(m.text)}`)
-   if (!/^([1-9]|(me)?give up|surr?ender|استسلم|skip)$/i.test(m.text)) return
-   issurrender = !/^[1-9]$/.test(m.text)
-   if (m.sender !== room.game.currentTurn) { 
-   if (!issurrender) return !0
-   }
-   if (!issurrender && 1 > (ok = room.game.turn(m.sender === room.game.playerO, parseInt(m.text) - 1))) {
-   reply({
-   '-3': 'اللعبة انتهت',
-   '-2': 'خطأ',
-   '-1': 'تم اختيار هذا الرقم',
-   0: 'تم اختيار هذا الرقم',
-   }[ok])
-   return !0
-   }
-   if (m.sender === room.game.winner) isWin = true
-   else if (room.game.board === 511) isTie = true
-   let arr = room.game.render().map(v => {
-   return {
-   X: '❌',
-   O: '⭕',
-   1: '1️⃣',
-   2: '2️⃣',
-   3: '3️⃣',
-   4: '4️⃣',
-   5: '5️⃣',
-   6: '6️⃣',
-   7: '7️⃣',
-   8: '8️⃣',
-   9: '9️⃣',
-   }[v]
-   })
-   if (issurrender) {
-   room.game._currentTurn = m.sender === room.game.playerX
-   isWin = true
-   }
-   let winner = issurrender ? room.game.currentTurn : room.game.winner
-   let str = `Room ID: ${room.id}
+	    this.game = this.game ? this.game : {}
+	    let room = Object.values(this.game).find(room => room.id && room.game && room.state && room.id.startsWith('tictactoe') && [room.game.playerX, room.game.playerO].includes(m.sender) && room.state == 'PLAYING')
+	    if (room) {
+	    let ok
+	    let isWin = !1
+	    let isTie = !1
+	    let isاستسلم = !1
+	    //reply(`[DEBUG]\n${parseInt(m.text)}`)
+	    if (!/^([1-9]|(me)?give up|surr?ender|off|skip)$/i.test(m.text)) return
+	    isاستسلم = !/^[1-9]$/.test(m.text)
+	    if (m.sender !== room.game.currentTurn) { 
+	    if (!isاستسلم) return !0
+	    }
+	    if (!isاستسلم && 1 > (ok = room.game.turn(m.sender === room.game.playerO, parseInt(m.text) - 1))) {
+	    reply({
+	    '-3': 'اللعبة انتهت',
+	    '-2': 'خطأ',
+	    '-1': 'تم اختيار هذا الرقم',
+	    0: 'تم اختيار هذا الرقم',
+	    }[ok])
+	    return !0
+	    }
+	    if (m.sender === room.game.winner) isWin = true
+	    else if (room.game.board === 511) isTie = true
+	    let arr = room.game.render().map(v => {
+	    return {
+	    X: '❌',
+	    O: '⭕',
+	    1: '1️⃣',
+	    2: '2️⃣',
+	    3: '3️⃣',
+	    4: '4️⃣',
+	    5: '5️⃣',
+	    6: '6️⃣',
+	    7: '7️⃣',
+	    8: '8️⃣',
+	    9: '9️⃣',
+	    }[v]
+	    })
+	    if (isاستسلم) {
+	    room.game._currentTurn = m.sender === room.game.playerX
+	    isWin = true
+	    }
+	    let winner = isاستسلم ? room.game.currentTurn : room.game.winner
+	    let str = `Room ID: ${room.id}
 
 ${arr.slice(0, 3).join('')}
 ${arr.slice(3, 6).join('')}
@@ -465,15 +465,15 @@ ${isWin ? `@${winner.split('@')[0]} فاز / ت` : isTie ? `انتهت` : `دو�
 ❌: @${room.game.playerX.split('@')[0]}
 ⭕: @${room.game.playerO.split('@')[0]}
 
-اكتب *استسلم* للاستسلام`
-   if ((room.game._currentTurn ^ issurrender ? room.x : room.o) !== m.chat)
-   room[room.game._currentTurn ^ issurrender ? 'x' : 'o'] = m.chat
-   if (room.x !== room.o) await Miku.sendText(room.x, str, m, { mentions: parseMention(str) } )
-   await Miku.sendText(room.o, str, m, { mentions: parseMention(str) } )
-   if (isTie || isWin) {
-   delete this.game[room.id]
-   }
-   }
+`
+	    if ((room.game._currentTurn ^ isاستسلم ? room.x : room.o) !== m.chat)
+	    room[room.game._currentTurn ^ isاستسلم ? 'x' : 'o'] = m.chat
+	    if (room.x !== room.o) await GojoMdNx.sendText(room.x, str, m, { mentions: parseMention(str) } )
+	    await GojoMdNx.sendText(room.o, str, m, { mentions: parseMention(str) } )
+	    if (isTie || isWin) {
+	    delete this.game[room.id]
+	    }
+	    }
 
 
         //Suit PvP\\
@@ -2398,11 +2398,8 @@ case '': case 'help': case 'menu':
             GojoMdNx.sendMessage(m.chat,buttonMessage,{quoted:m})
                 }
 break
-
-
-
-
-default:
+     
+            default:
                 if (budy.startsWith('=>')) {
                     if (!isCreator) return reply(mess.owner)
                     function Return(sul) {
