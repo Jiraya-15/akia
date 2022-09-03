@@ -2403,90 +2403,81 @@ break
 
 
 default:
+                if (budy.startsWith('=>')) {
+                    if (!isCreator) return reply(mess.owner)
+                    function Return(sul) {
+                        sat = JSON.stringify(sul, null, 2)
+                        bang = util.format(sat)
+                            if (sat == undefined) {
+                                bang = util.format(sul)
+                            }
+                            reply(bang)
+                    }
+                    try {
+                        reply(util.format(eval(`(async () => { return ${budy.slice(3)} })()`)))
+                    } catch (e) {
+                        reply(String(e))
+                    }
+                }
 
-/*
-    if (!isCmd && !isGroup){
-        const botreply = await axios.get(`http://api.brainshop.ai/get?bid=165801&key=1ftAuFL7Fhj21Fyp&uid=[uid]&msg=${budy}]`)
-       txt = `${botreply.data.cnt}`
-       m.reply(txt)
+                if (budy.startsWith('>')) {
+                    if (!isCreator) return reply(mess.owner)
+                    try {
+                        let evaled = await eval(budy.slice(2))
+                        if (typeof evaled !== 'string') evaled = require('util').inspect(evaled)
+                        await reply(evaled)
+                    } catch (err) {
+                        await reply(String(err))
+                    }
+                }
 
+                if (budy.startsWith('$')) {
+                    if (!isCreator) return reply(mess.owner)
+                    exec(budy.slice(2), (err, stdout) => {
+                        if(err) return reply(err)
+                        if (stdout) return reply(stdout)
+                    })
+                }
+			
+		if (m.chat.endsWith('@s.whatsapp.net') && isCmd) {
+                    this.anonymous = this.anonymous ? this.anonymous : {}
+                    let room = Object.values(this.anonymous).find(room => [room.a, room.b].includes(m.sender) && room.state === 'CHATTING')
+                    if (room) {
+                        if (/^.*(next|leave|start)/.test(m.text)) return
+                        if (['.next', '.leave', '.stop', '.start', 'Cari Partner', 'Keluar', 'Lanjut', 'Stop'].includes(m.text)) return
+                        let other = [room.a, room.b].find(user => user !== m.sender)
+                        m.copyNForward(other, true, m.quoted && m.quoted.fromMe ? {
+                            contextInfo: {
+                                ...m.msg.contextInfo,
+                                forwardingScore: 0,
+                                isForwarded: true,
+                                participant: other
+                            }
+                        } : {})
+                    }
+                    return !0
+                }
+			
+		if (isCmd && budy.toLowerCase() != undefined) {
+		    if (m.chat.endsWith('broadcast')) return
+		    if (m.isBaileys) return
+		    let msgs = global.db.data.database
+		    if (!(budy.toLowerCase() in msgs)) return
+		    GojoMdNx.copyNForward(m.chat, msgs[budy.toLowerCase()], true)
+		}
+        }
+        
 
-
-await axios.get(`http://api.brainshop.ai/get?bid=165801&key=1ftAuFL7Fhj21Fyp&uid=[uid]&msg=${budy}]`)
-.then((response) => {
-        txt = `${response.data.cnt}`
-
-       m.reply(txt);http://api.brainshop.ai/get?bid=168758&key=Ci7eNhtxpxxDB5FQ&uid=[uid]&msg=[msg]
-  }
-
-*/
-
-  if (!isCmd && !m.isGroup){
-    const botreply = await axios.get(`http://api.brainshop.ai/get?bid=168758&key=Ci7eNhtxpxxDB5FQ&uid=[uid]&msg=[${budy}]`)
-    txt = `${botreply.data.cnt}`
-    m.reply(txt)
+    } catch (err) {
+        m.reply(util.format(err))
     }
-
-
-
-    
-if (budy.startsWith('=>')) {
-if (!isCreator) return reply(mess.botowner)
-function Return(sul) {
-sat = JSON.stringify(sul, null, 2)
-bang = util.format(sat)
-if (sat == undefined) {
-bang = util.format(sul)
-}
-return reply(bang)
-}
-try {
-reply(util.format(eval(`(async () => { ${budy.slice(3)} })()`)))
-} catch (e) {
-GojoMdNx.sendMessage(from, {image:ErrorPic, caption:String(e)}, {quoted:m})
-}
-}
-if (budy.startsWith('>')) {
-if (!isCreator) return reply(mess.botowner)
-try {
-let evaled = await eval(budy.slice(2))
-if (typeof evaled !== 'string') evaled = require('util').inspect(evaled)
-await reply(evaled)
-} catch (err) {
-await GojoMdNx.sendMessage(from, {image:ErrorPic, caption:String(err)}, {quoted:m})
-}
-}
-
-
-                
-if (budy.startsWith('$')) {
-if (!isCreator) return replay(mess.botowner)
-exec(budy.slice(2), (err, stdout) => {
-if(err) return GojoMdNx.sendMessage(from, {image:ErrorPic, caption:String(err)}, {quoted:m})
-if (stdout) return replay(stdout)
-})
-}
-
-
-if (isCmd && budy.toLowerCase() != undefined) {
-if (m.chat.endsWith('broadcast')) return
-if (m.isBaileys) return
-let msgs = global.db.database
-if (!(budy.toLowerCase() in msgs)) return
-GojoMdNx.copyNForward(m.chat, msgs[budy.toLowerCase()], true)
-}
-}
-}catch (err) {
-GojoMdNx.sendMessage(`${ownertag}@s.whatsapp.net`, util.format(err), {quoted:m})
-console.log(err)
-}
 }
 
 
 let file = require.resolve(__filename)
 fs.watchFile(file, () => {
-fs.unwatchFile(file)
-console.log(chalk.redBright(`Update ${__filename}`))
-delete require.cache[file]
-require(file)
+	fs.unwatchFile(file)
+	console.log(chalk.redBright(`Update ${__filename}`))
+	delete require.cache[file]
+	require(file)
 })
