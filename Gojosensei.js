@@ -411,51 +411,51 @@ ${Array.from(room.jawaban, (jawaban, index) => {
         }
         
         //TicTacToe\\
-	    this.game = this.game ? this.game : {}
-	    let room = Object.values(this.game).find(room => room.id && room.game && room.state && room.id.startsWith('tictactoe') && [room.game.playerX, room.game.playerO].includes(m.sender) && room.state == 'PLAYING')
-	    if (room) {
-	    let ok
-	    let isWin = !1
-	    let isTie = !1
-	    let isاستسلم = !1
-	    //reply(`[DEBUG]\n${parseInt(m.text)}`)
-	    if (!/^([1-9]|(me)?give up|surr?ender|off|skip)$/i.test(m.text)) return
-	    isاستسلم = !/^[1-9]$/.test(m.text)
-	    if (m.sender !== room.game.currentTurn) { 
-	    if (!isاستسلم) return !0
-	    }
-	    if (!isاستسلم && 1 > (ok = room.game.turn(m.sender === room.game.playerO, parseInt(m.text) - 1))) {
-	    reply({
-	    '-3': 'اللعبة انتهت',
-	    '-2': 'خطأ',
-	    '-1': 'تم اختيار هذا الرقم',
-	    0: 'تم اختيار هذا الرقم',
-	    }[ok])
-	    return !0
-	    }
-	    if (m.sender === room.game.winner) isWin = true
-	    else if (room.game.board === 511) isTie = true
-	    let arr = room.game.render().map(v => {
-	    return {
-	    X: '❌',
-	    O: '⭕',
-	    1: '1️⃣',
-	    2: '2️⃣',
-	    3: '3️⃣',
-	    4: '4️⃣',
-	    5: '5️⃣',
-	    6: '6️⃣',
-	    7: '7️⃣',
-	    8: '8️⃣',
-	    9: '9️⃣',
-	    }[v]
-	    })
-	    if (isاستسلم) {
-	    room.game._currentTurn = m.sender === room.game.playerX
-	    isWin = true
-	    }
-	    let winner = isاستسلم ? room.game.currentTurn : room.game.winner
-	    let str = `Room ID: ${room.id}
+   this.game = this.game ? this.game : {}
+   let room = Object.values(this.game).find(room => room.id && room.game && room.state && room.id.startsWith('tictactoe') && [room.game.playerX, room.game.playerO].includes(m.sender) && room.state == 'PLAYING')
+   if (room) {
+   let ok
+   let isWin = !1
+   let isTie = !1
+   let issurrender = !1
+   //reply(`[DEBUG]\n${parseInt(m.text)}`)
+   if (!/^([1-9]|(me)?give up|surr?ender|استسلم|skip)$/i.test(m.text)) return
+   issurrender = !/^[1-9]$/.test(m.text)
+   if (m.sender !== room.game.currentTurn) { 
+   if (!issurrender) return !0
+   }
+   if (!issurrender && 1 > (ok = room.game.turn(m.sender === room.game.playerO, parseInt(m.text) - 1))) {
+   reply({
+   '-3': 'اللعبة انتهت',
+   '-2': 'خطأ',
+   '-1': 'تم اختيار هذا الرقم',
+   0: 'تم اختيار هذا الرقم',
+   }[ok])
+   return !0
+   }
+   if (m.sender === room.game.winner) isWin = true
+   else if (room.game.board === 511) isTie = true
+   let arr = room.game.render().map(v => {
+   return {
+   X: '❌',
+   O: '⭕',
+   1: '1️⃣',
+   2: '2️⃣',
+   3: '3️⃣',
+   4: '4️⃣',
+   5: '5️⃣',
+   6: '6️⃣',
+   7: '7️⃣',
+   8: '8️⃣',
+   9: '9️⃣',
+   }[v]
+   })
+   if (issurrender) {
+   room.game._currentTurn = m.sender === room.game.playerX
+   isWin = true
+   }
+   let winner = issurrender ? room.game.currentTurn : room.game.winner
+   let str = `Room ID: ${room.id}
 
 ${arr.slice(0, 3).join('')}
 ${arr.slice(3, 6).join('')}
@@ -465,15 +465,15 @@ ${isWin ? `@${winner.split('@')[0]} فاز / ت` : isTie ? `انتهت` : `دو�
 ❌: @${room.game.playerX.split('@')[0]}
 ⭕: @${room.game.playerO.split('@')[0]}
 
-`
-	    if ((room.game._currentTurn ^ isاستسلم ? room.x : room.o) !== m.chat)
-	    room[room.game._currentTurn ^ isاستسلم ? 'x' : 'o'] = m.chat
-	    if (room.x !== room.o) await GojoMdNx.sendText(room.x, str, m, { mentions: parseMention(str) } )
-	    await GojoMdNx.sendText(room.o, str, m, { mentions: parseMention(str) } )
-	    if (isTie || isWin) {
-	    delete this.game[room.id]
-	    }
-	    }
+اكتب *استسلم* للاستسلام`
+   if ((room.game._currentTurn ^ issurrender ? room.x : room.o) !== m.chat)
+   room[room.game._currentTurn ^ issurrender ? 'x' : 'o'] = m.chat
+   if (room.x !== room.o) await Miku.sendText(room.x, str, m, { mentions: parseMention(str) } )
+   await Miku.sendText(room.o, str, m, { mentions: parseMention(str) } )
+   if (isTie || isWin) {
+   delete this.game[room.id]
+   }
+   }
 
 
         //Suit PvP\\
@@ -537,8 +537,8 @@ ${arr.slice(6).join('')}
 دورك @${room.game.currentTurn.split('@')[0]}
 
  `
-        if (room.x !== room.o) await Miku.sendText(room.x, str, m, { mentions: parseMention(str) } )
-        await Miku.sendText(room.o, str, m, { mentions: parseMention(str) } )
+        if (room.x !== room.o) await GojoMdNx.sendText(room.x, str, m, { mentions: parseMention(str) } )
+        await GojoMdNx.sendText(room.o, str, m, { mentions: parseMention(str) } )
         } else {
         room = {
         id: 'tictactoe-' + (+new Date),
@@ -563,13 +563,13 @@ case 'بروفايل':
      
 
      var flob = await getBuffer(picak+'User Profile')
-     var bio= await Miku.fetchStatus(m.sender)
+     var bio= await GojoMdNx.fetchStatus(m.sender)
      var bioo = bio.status
      const adn= isAdmins? "نعم":"لا"
      
      try {
         
-        pfp=await Miku.profilePictureUrl(m.sender, 'image')
+        pfp=await GojoMdNx.profilePictureUrl(m.sender, 'image')
     
           } catch (e) {
      
@@ -590,7 +590,7 @@ let buttonspro = [
                 buttons: buttonspro,
                 headerType: 4
             }
-        Miku.sendMessage(m.chat,buttonMessage,{quoted:m})
+        GojoMdNx.sendMessage(m.chat,buttonMessage,{quoted:m})
         	
             break
 
@@ -602,13 +602,13 @@ let buttonspro = [
                 if (isBanChat) return replay('هذا القروب محضور مسبقا')
                 banchat.push(from)
                 replay('تم حضر القروب من استخدام البوت')
-                var groupe = await Miku.groupMetadata(from)
+                var groupe = await GojoMdNx.groupMetadata(from)
                 var members = groupe['participants']
                 var mems = []
                 members.map(async adm => {
                 mems.push(adm.id.replace('c.us', 's.whatsapp.net'))
                 })
-                Miku.sendMessage(from, {text: `\`\`\`「 ملاحضة 」\`\`\`\n\nلا يمكن لاحد استخدام اوامر البوت ، كلم جيرايا لرفع الحضر`, contextInfo: { mentionedJid : mems }}, {quoted:m})
+                GojoMdNx.sendMessage(from, {text: `\`\`\`「 ملاحضة 」\`\`\`\n\nلا يمكن لاحد استخدام اوامر البوت ، كلم جيرايا لرفع الحضر`, contextInfo: { mentionedJid : mems }}, {quoted:m})
                 } else if (args[0] === "off") {
                 if (!isBanChat) return replay('هذا القروب محضور مسبقا')
                 let off = banchat.indexOf(from)
@@ -619,7 +619,7 @@ let buttonspro = [
                   { buttonId: `-bangroup on`, buttonText: { displayText: 'حضر' }, type: 1 },
                   { buttonId: `-bangroup off`, buttonText: { displayText: 'فك الحضر' }, type: 1 }
                   ]
-                  await Miku.sendButtonText(m.chat, buttonsntnsfw, `حضر = لا يمكن استخدام البوت\n\n فك الحضر = اشتغال البوت فالقروب`, `${global.BotName }`, m)
+                  await GojoMdNx.sendButtonText(m.chat, buttonsntnsfw, `حضر = لا يمكن استخدام البوت\n\n فك الحضر = اشتغال البوت فالقروب`, `${global.BotName }`, m)
                   }
                   }
                   break
@@ -661,7 +661,7 @@ case 'مقطع': {
         let { ringtone } = require('./lib/scraper')
 		let anu = await ringtone(text)
 		let result = anu[Math.floor(Math.random() * anu.length)]
-		Miku.sendMessage(m.chat, { audio: { url: result.audio }, fileName: result.title+'.mp3', mimetype: 'audio/mpeg' }, { quoted: m })
+		GojoMdNx.sendMessage(m.chat, { audio: { url: result.audio }, fileName: result.title+'.mp3', mimetype: 'audio/mpeg' }, { quoted: m })
 	    }
 	    break
 
@@ -676,7 +676,7 @@ xfarrapi.Film(q)
 			    for (let i of data) {
                 krl += (`-----------------------------------------------------------------------------\n\n\n*الاسم:* ${i.judul}\n *الجودة :* ${i.quality}\n *النوع : ${i.type}*\n *تم التنزيل في :* ${i.upload}\n *الرابط :* ${i.link}\n\n\n`)
                 }
-               Miku.sendMessage(from, { image: { url: data[0].thumb}, caption: krl }, { quoted: fdocs })
+               GojoMdNx.sendMessage(from, { image: { url: data[0].thumb}, caption: krl }, { quoted: fdocs })
 });
 break
 
@@ -702,7 +702,7 @@ let buttons = [
             buttons: buttons,
             headerType: 4
         }
-        Miku.sendMessage(m.chat, buttonMessage, { quoted: m })
+        GojoMdNx.sendMessage(m.chat, buttonMessage, { quoted: m })
     }
     break
 
@@ -733,7 +733,7 @@ if (isBanChat) return reply(mess.bangc)
            }
                 sections.push(yy)
             }
-            const sendm =  Miku.sendMessage(
+            const sendm =  GojoMdNx.sendMessage(
 from, 
 {
 text: "Group Settings",
@@ -751,10 +751,10 @@ break
         let anu = await store.chats.all().filter(v => v.id.endsWith('@g.us')).map(v => v.id)
         let teks = `مجموع القروبات : ${anu.length} \n\n`
         for (let i of anu) {
-            let metadata = await Miku.groupMetadata(i)
+            let metadata = await GojoMdNx.groupMetadata(i)
             teks += `💫 الاسم : ${metadata.subject}\n💫 مؤسس القروب : @${metadata.owner.split('@')[0]}\n💫 ايدي القروب : ${metadata.id}\n💫 تاريخ التاسيس : ${moment(metadata.creation * 1000).tz('Asia/Kolkata').format('DD/MM/YYYY HH:mm:ss')}\n💫 الاعضاء : ${metadata.participants.length}\n\n────────────────────────\n\n`
         }
-        Miku.sendTextWithMentions(m.chat, teks, m)
+        GojoMdNx.sendTextWithMentions(m.chat, teks, m)
     }
     break
 
@@ -771,7 +771,7 @@ case 'coffee': {
                         buttons: buttons,
                         headerType: 4
                     }
-                    Miku.sendMessage(m.chat, buttonMessage, { quoted: m })
+                    GojoMdNx.sendMessage(m.chat, buttonMessage, { quoted: m })
                 }
                 break
 
@@ -784,7 +784,7 @@ if (!q) reply(`*مثال :* ${prefix + command} 🦉+🤣`)
 let [emoji1, emoji2] = q.split`+`
 let kuntuh = await fetchJson(`https://tenor.googleapis.com/v2/featured?key=AIzaSyAyimkuYQYF_FXVALexPuGQctUWRURdCYQ&contentfilter=high&media_filter=png_transparent&component=proactive&collection=emoji_kitchen_v5&q=${encodeURIComponent(emoji1)}_${encodeURIComponent(emoji2)}`)
 for (let res of kuntuh.results) {
-let encmedia = await Miku.sendImageAsSticker(from, res.url, m, { packname: global.packname, author: global.author, categories: res.tags })
+let encmedia = await GojoMdNx.sendImageAsSticker(from, res.url, m, { packname: global.packname, author: global.author, categories: res.tags })
 await fs.unlinkSync(encmedia)
 }
 }
@@ -807,7 +807,7 @@ break
 if (isBanChat) return reply(mess.bangc)
 if (!args.join(" ")) return reply('وين الايموجي ؟')
 emoji.get(args.join(" ")).then(async(emoji) => {
-let mese = await Miku.sendMessage(m.chat, {image:{url:emoji.images[4].url}, caption: `تمم`}, {quoted:m})
+let mese = await GojoMdNx.sendMessage(m.chat, {image:{url:emoji.images[4].url}, caption: `تمم`}, {quoted:m})
 })
 }
 break
@@ -816,7 +816,7 @@ case 'حذف': {
     if (!m.quoted) reply(false)
     let { chat, fromMe, id, isBaileys } = m.quoted
     if (!isBaileys) return replay(`ذي مب رسالتي يغبي .`)
-    Miku.sendMessage(m.chat, { delete: { remoteJid: m.chat, fromMe: true, id: m.quoted.id, participant: m.quoted.sender } })
+    GojoMdNx.sendMessage(m.chat, { delete: { remoteJid: m.chat, fromMe: true, id: m.quoted.id, participant: m.quoted.sender } })
 }
 break
 
@@ -835,7 +835,7 @@ const key = {
     participant: m.quoted.sender
 }
 
-await Miku.sendMessage(m.chat, { delete: key })
+await GojoMdNx.sendMessage(m.chat, { delete: key })
  }
  break
 
@@ -849,7 +849,7 @@ await Miku.sendMessage(m.chat, { delete: key })
  for (let i of anu) {
   teks += `\n\nProfile : @${i.id.split('@')[0]}\nChat : ${i.unreadCount}\nLastchat : ${moment(i.conversationTimestamp * 1000).tz("Asia/Kolkata").format("DD/MM/YYYY HH:mm:ss")}`
  }
- Miku.sendTextWithMentions(m.chat, teks, m)
+ GojoMdNx.sendTextWithMentions(m.chat, teks, m)
  }
  break
 
@@ -859,7 +859,7 @@ await Miku.sendMessage(m.chat, { delete: key })
  let anu = await store.chats.all().filter(v => v.id.endsWith('@g.us')).map(v => v.id)
  let teks = ` 「  Miku's group user list  」\n\nTotal ${anu.length} users are using bot in Groups.`
  for (let i of anu) {
-  let metadata = await Miku.groupMetadata(i)
+  let metadata = await GojoMdNx.groupMetadata(i)
   if (metadata.owner === "undefined") {
   loldd = false
   } else {
@@ -867,7 +867,7 @@ await Miku.sendMessage(m.chat, { delete: key })
   }
   teks += `\n\nName : ${metadata.subject ? metadata.subject : "undefined"}\nOwner : ${loldd ? '@' + loldd.split("@")[0] : "undefined"}\nID : ${metadata.id ? metadata.id : "undefined"}\nMade : ${metadata.creation ? moment(metadata.creation * 1000).tz('Asia/Kolkata').format('DD/MM/YYYY HH:mm:ss') : "undefined"}\nMember : ${metadata.participants.length ? metadata.participants.length : "undefined"}`
  }
- Miku.sendTextWithMentions(m.chat, teks, m)
+ GojoMdNx.sendTextWithMentions(m.chat, teks, m)
  }
  break
 
@@ -895,7 +895,7 @@ await Miku.sendMessage(m.chat, { delete: key })
 case 'منشني': {
 	if (isBan) return reply(mess.ban)	 			
 if (isBanChat) return reply(mess.banChat)
-Miku.sendMessage(m.chat, {text:`@${m.sender.split("@")[0]}`, contextInfo:{mentionedJid:[m.sender]}}, {quoted:m})
+GojoMdNx.sendMessage(m.chat, {text:`@${m.sender.split("@")[0]}`, contextInfo:{mentionedJid:[m.sender]}}, {quoted:m})
 }
 break
 
@@ -908,7 +908,7 @@ case 'متصلين':{
  let id = args && /\d+\-\d+@g.us/.test(args[0]) ? args[0] : m.chat
  let online = [...Object.keys(store.presences[id]), botNumber]
  let liston = 1
- Miku.sendText(m.chat, '  「 *قائمة المتصلين* 」\n\n' + online.map(v => `${liston++} . @` + v.replace(/@.+/, '')).join`\n`, m, { mentions: online })
+ GojoMdNx.sendText(m.chat, '  「 *قائمة المتصلين* 」\n\n' + online.map(v => `${liston++} . @` + v.replace(/@.+/, '')).join`\n`, m, { mentions: online })
  }
  break
  
@@ -933,7 +933,7 @@ case 'هابي_مود': {
  buttons: buttons,
  headerType: 4
  }
- Miku.sendMessage(m.chat, buttonMessage, { quoted: m })
+ GojoMdNx.sendMessage(m.chat, buttonMessage, { quoted: m })
  })
  }
  break
@@ -945,7 +945,7 @@ case 'هابي_مود': {
  if (!isBotAdmins) return replay(mess.botadmin)
  if (!isAdmins && !isCreator) return replay(mess.useradmin)
  if (!text) return replay('اكتب الاسم')
- await Miku.groupUpdateSubject(m.chat, text).then((res) => replay(mess.jobdone)).catch((err) => replay(jsonformat(err)))
+ await GojoMdNx.groupUpdateSubject(m.chat, text).then((res) => replay(mess.jobdone)).catch((err) => replay(jsonformat(err)))
  }
  break
 
@@ -956,7 +956,7 @@ case 'هابي_مود': {
  if (!isBotAdmins) return replay(mess.botadmin)
  if (!isAdmins && !isCreator) return replay(mess.useradmin)
  if (!text) return replay('اكتب الوصف الي بدك احطه')
- await Miku.groupUpdateDescription(m.chat, text).then((res) => replay(mess.jobdone)).catch((err) => replay(jsonformat(err)))
+ await GojoMdNx.groupUpdateDescription(m.chat, text).then((res) => replay(mess.jobdone)).catch((err) => replay(jsonformat(err)))
  }
  break
 
@@ -969,8 +969,8 @@ case 'هابي_مود': {
  if (!quoted) return replay(`رد عالصورة`)
  if (!/image/.test(mime)) return replay(`رد عالصورة`)
  if (/webp/.test(mime)) return replay(`رد عالصورة`)
- let media = await Miku.downloadAndSaveMediaMessage(quoted)
- await Miku.updateProfilePicture(m.chat, { url: media }).catch((err) => fs.unlinkSync(media))
+ let media = await GojoMdNx.downloadAndSaveMediaMessage(quoted)
+ await GojoMdNx.updateProfilePicture(m.chat, { url: media }).catch((err) => fs.unlinkSync(media))
  replay(mess.jobdone)
  }
  break
@@ -986,7 +986,7 @@ case 'هابي_مود': {
  for (let mem of participants) {
  teks += `» @${mem.id.split('@')[0]}\n`
  }
- Miku.sendMessage(m.chat, { text: teks, mentions: participants.map(a => a.id) }, { quoted: m })
+ GojoMdNx.sendMessage(m.chat, { text: teks, mentions: participants.map(a => a.id) }, { quoted: m })
  }
  break
 
@@ -1005,7 +1005,7 @@ for (let memNum of participants) {
     menText += `${emo} *@${memNum.id.split('@')[0]}*\n`
     //members_id.push(memNum.jid)
 }
-Miku.sendMessage(m.chat,{text:menText,mentions: participants.map(a => a.id)},{quoted:m})
+GojoMdNx.sendMessage(m.chat,{text:menText,mentions: participants.map(a => a.id)},{quoted:m})
 break
 
  case 'مخفي': {
@@ -1013,7 +1013,7 @@ break
  if (isBanChat) return reply(mess.bangc)
  if (!m.isGroup) return replay(mess.grouponly)
  if (!isAdmins && !isCreator) return replay(mess.useradmin)
- Miku.sendMessage(m.chat, { text : args.join(" ") ? args.join(" ") : '' , mentions: participants.map(a => a.id)}, { quoted: m })
+ GojoMdNx.sendMessage(m.chat, { text : args.join(" ") ? args.join(" ") : '' , mentions: participants.map(a => a.id)}, { quoted: m })
  }
  break
 
@@ -1024,8 +1024,8 @@ break
  if (!m.isGroup) return replay(mess.grouponly)
  if (!isAdmins && !isCreator) return replay(mess.useradmin)
  if (!isBotAdmins) return replay(mess.botadmin)
- let response = await Miku.groupInviteCode(m.chat)
- Miku.sendMessage(m.chat, {text:` *${groupMetadata.subject}* \n\n*الرابط :* \nhttps://chat.whatsapp.com/${response}l`, "contextInfo": {
+ let response = await GojoMdNx.groupInviteCode(m.chat)
+ GojoMdNx.sendMessage(m.chat, {text:` *${groupMetadata.subject}* \n\n*الرابط :* \nhttps://chat.whatsapp.com/${response}l`, "contextInfo": {
  mimetype: "image/jpeg",
  text: `${global.OwnerName}`,
  "forwardingScore": 1000000000,
@@ -1049,7 +1049,7 @@ break
     if (!m.isGroup) return replay(mess.grouponly)
     if (!isBotAdmins) return replay(mess.botadmin)
     if (!isAdmins && !isCreator) return replay(mess.useradmin)
-    Miku.groupRevokeInvite(m.chat)
+    GojoMdNx.groupRevokeInvite(m.chat)
     }
     break
 
@@ -1061,9 +1061,9 @@ break
      if (!isBotAdmins) return replay(mess.botadmin)
      if (!isAdmins && !isCreator) return replay(mess.useradmin)
      if (args[0] === 'close'){
-     await Miku.groupSettingUpdate(m.chat, 'announcement').then((res) => replay(`تم غلق المجموعة`)).catch((err) => replay(jsonformat(err)))
+     await GojoMdNx.groupSettingUpdate(m.chat, 'announcement').then((res) => replay(`تم غلق المجموعة`)).catch((err) => replay(jsonformat(err)))
      } else if (args[0] === 'open'){
-     await Miku.groupSettingUpdate(m.chat, 'not_announcement').then((res) => replay(`تم فتح المجموعة`)).catch((err) => replay(jsonformat(err)))
+     await GojoMdNx.groupSettingUpdate(m.chat, 'not_announcement').then((res) => replay(`تم فتح المجموعة`)).catch((err) => replay(jsonformat(err)))
      } else {
      let buttons = [
      { buttonId: '-group open', buttonText: { displayText: 'فتح' }, type: 1 },
@@ -1077,7 +1077,7 @@ break
      buttons: buttons,
      headerType: 4
      }
-     Miku.sendMessage(m.chat, buttonMessage, { quoted: m })
+     GojoMdNx.sendMessage(m.chat, buttonMessage, { quoted: m })
      }
      }
      break
@@ -1089,7 +1089,7 @@ break
      if (!isBotAdmins) return replay(mess.botadmin)
      if (!isAdmins && !isCreator) return replay(mess.useradmin)
      let users = m.mentionedJid[0] ? m.mentionedJid[0] : m.quoted ? m.quoted.sender : text.replace(/[^0-9]/g, '')+'@s.whatsapp.net'
-     await Miku.groupParticipantsUpdate(m.chat, [users], 'promote')
+     await GojoMdNx.groupParticipantsUpdate(m.chat, [users], 'promote')
      }
      break
 
@@ -1100,7 +1100,7 @@ break
      if (!isBotAdmins) return replay(mess.botadmin)
      if (!isAdmins && !isCreator) return replay(mess.useradmin)
      let users = m.mentionedJid[0] ? m.mentionedJid[0] : m.quoted ? m.quoted.sender : text.replace(/[^0-9]/g, '')+'@s.whatsapp.net'
-     await Miku.groupParticipantsUpdate(m.chat, [users], 'demote')
+     await GojoMdNx.groupParticipantsUpdate(m.chat, [users], 'demote')
      }
      break
 
@@ -1111,7 +1111,7 @@ break
      if (!isBotAdmins) return replay(mess.botadmin)
      if (!isAdmins && !isCreator) return replay(mess.useradmin)
      let users = m.mentionedJid[0] ? m.mentionedJid[0] : m.quoted ? m.quoted.sender : text.replace(/[^0-9]/g, '')+'@s.whatsapp.net'
-     await Miku.groupParticipantsUpdate(m.chat, [users], 'remove')
+     await GojoMdNx.groupParticipantsUpdate(m.chat, [users], 'remove')
      }
      break
 
@@ -1122,7 +1122,7 @@ break
                 if (!isBotAdmins) return replay(`${mess.botAdmin}`)
                 if (!isAdmins) return replay(`${mess.admin}`)
 		let users = m.quoted ? m.quoted.sender : text.replace(/[^0-9]/g, '')+'@s.whatsapp.net'
-		await Miku.groupParticipantsUpdate(m.chat, [users], 'add')
+		await GojoMdNx.groupParticipantsUpdate(m.chat, [users], 'add')
 	}
 	break
 
@@ -1136,10 +1136,10 @@ break
      let vcc = vdd.split("https://chat.whatsapp.com/")[1]
      if (!vcc) return replay("رابط غير صالح")
      if (isCreator) {
-     await Miku.groupAcceptInvite(vcc).then(async(res) => replay(jsonformat(res))).catch(_ => _)
+     await GojoMdNx.groupAcceptInvite(vcc).then(async(res) => replay(jsonformat(res))).catch(_ => _)
      replay("تم")
      } else {
-     Miku.query({
+     GojoMdNx.query({
      tag: "iq",
      attrs: {
      type: "get",
@@ -1153,7 +1153,7 @@ break
      teks = `يجب ان تتوفر المجموعة على 50 عضو للدخول`
      sendOrder(m.chat, teks, "667140254502463", fs.readFileSync('./Assets/pic7.jpg'), `${global.packname}`, `${global.BotName}`, "34612538080@s.whatsapp.net", "AR6NCY8euY5cbS8Ybg5Ca55R8HFSuLO3qZqrIYCT7hQp0g==", "99999999999999999999")
      } else if (sizny > 50) {
-     await Miku.groupAcceptInvite(vcc).then(async(res) => replay(jsonformat(res))).catch(_ => _)
+     await GojoMdNx.groupAcceptInvite(vcc).then(async(res) => replay(jsonformat(res))).catch(_ => _)
      replay("تم")
      } else {
      replay("خطأ")
@@ -1168,14 +1168,14 @@ break
         if (isBan) return reply(mess.banned)	 			
      if (isBanChat) return reply(mess.bangc)
      if (!args.join(" ")) return reply(`مثال: ${prefix + command} 10`)
-     media = await Miku.downloadAndSaveMediaMessage(quoted, "volume")
+     media = await GojoMdNx.downloadAndSaveMediaMessage(quoted, "volume")
      if (isQuotedAudio) {
      rname = getRandom('.mp3')
      exec(`ffmpeg -i ${media} -filter:a volume=${args[0]} ${rname}`, (err, stderr, stdout) => {
      fs.unlinkSync(media)
      if (err) return reply('خطأ')
      jadie = fs.readFileSync(rname)
-     Miku.sendMessage(from, {audio:jadie, mimetype: 'audio/mp4', ptt: true}, {quoted: m})
+     GojoMdNx.sendMessage(from, {audio:jadie, mimetype: 'audio/mp4', ptt: true}, {quoted: m})
      fs.unlinkSync(rname)
      })
      } else if (isQuotedVideo) {
@@ -1184,7 +1184,7 @@ break
      fs.unlinkSync(media)
      if (err) return reply('Error!')
      jadie = fs.readFileSync(rname)
-     Miku.sendMessage(from, {video:jadie, mimetype: 'video/mp4'}, {quoted: m})
+     GojoMdNx.sendMessage(from, {video:jadie, mimetype: 'video/mp4'}, {quoted: m})
      fs.unlinkSync(rname)
      })
      } else {
@@ -1211,9 +1211,9 @@ case 'عام': {
     if (isBan) return reply(mess.banned)	 			
  if (isBanChat) return reply(mess.bangc)
  if (!isCreator) return reply(mess.owner)
- Miku.public = true
+ GojoMdNx.public = true
  reply('تم')
- Miku.setStatus(`Mode : Public`)
+ GojoMdNx.setStatus(`Mode : Public`)
  }
  break
  
@@ -1221,9 +1221,9 @@ case 'عام': {
     if (isBan) return reply(mess.banned)	 			
  if (isBanChat) return reply(mess.bangc)
  if (!isCreator) return reply(mess.botowner)
- Miku.public = false
+ GojoMdNx.public = false
  reply('البوت نايم 😴')
- Miku.setStatus(`Mode : Self`)
+ GojoMdNx.setStatus(`Mode : Self`)
  }
  break
 
@@ -1233,13 +1233,13 @@ case 'لصورة': {
 if (isBanChat) return reply(mess.bangc)
 if (!m.quoted) return reply('رد عملصق')
 if (!/webp/.test(mime)) return reply(`رد عملصق`)
-let media = await Miku.downloadAndSaveMediaMessage(quoted)
+let media = await GojoMdNx.downloadAndSaveMediaMessage(quoted)
 let ran = await getRandom('.png')
 exec(`ffmpeg -i ${media} ${ran}`, (err) => {
 fs.unlinkSync(media)
 if (err) throw err
 let buffer = fs.readFileSync(ran)
-Miku.sendMessage(m.chat, { image: buffer }, { quoted: m})
+GojoMdNx.sendMessage(m.chat, { image: buffer }, { quoted: m})
 fs.unlinkSync(ran)
 })
 }
@@ -1251,9 +1251,9 @@ case 'لفيديو': {
  if (!m.quoted) return reply('رد عملصق')
  if (!/webp/.test(mime)) return reply(`رد عملصق`)
  let { webp2mp4File } = require('./lib/uploader')
- let media = await Miku.downloadAndSaveMediaMessage(quoted)
+ let media = await GojoMdNx.downloadAndSaveMediaMessage(quoted)
  let webpToMp4 = await webp2mp4File(media)
- await Miku.sendMessage(m.chat, { video: { url: webpToMp4.result, caption: 'Here it is...' } }, { quoted: m })
+ await GojoMdNx.sendMessage(m.chat, { video: { url: webpToMp4.result, caption: 'Here it is...' } }, { quoted: m })
  await fs.unlinkSync(media)
  }
  break
@@ -1266,7 +1266,7 @@ case 'لصوتية': {
  let media = await quoted.download()
  let { toAudio } = require('./lib/converter')
  let audio = await toAudio(media, 'mp4')
- Miku.sendMessage(m.chat, {audio: audio, mimetype: 'audio/mpeg'}, { quoted : m })
+ GojoMdNx.sendMessage(m.chat, {audio: audio, mimetype: 'audio/mpeg'}, { quoted : m })
  }
 break
 
@@ -1278,16 +1278,16 @@ case 'غيف':{
  if (!/webp/.test(mime)) return reply(`رد عملصق`)
  reply(mess.wait)
  let { webp2mp4File } = require('./lib/uploader')
- let media = await Miku.downloadAndSaveMediaMessage(quoted)
+ let media = await GojoMdNx.downloadAndSaveMediaMessage(quoted)
  let webpToMp4 = await webp2mp4File(media)
- await Miku.sendMessage(m.chat, { video: { url: webpToMp4.result, caption: 'تمم' }, gifPlayback: true }, { quoted: m })
+ await GojoMdNx.sendMessage(m.chat, { video: { url: webpToMp4.result, caption: 'تمم' }, gifPlayback: true }, { quoted: m })
  await fs.unlinkSync(media)
  }
  break
 
 
  case 'المطور':{
-    Miku.sendContact(m.chat, global.Owner, m)
+    GojoMdNx.sendContact(m.chat, global.Owner, m)
     }
     break
 
@@ -1312,7 +1312,7 @@ buttons: buttons,
 headerType: 4,
 
 }
-Miku.sendMessage(m.chat, buttonMessage, { quoted: m })
+GojoMdNx.sendMessage(m.chat, buttonMessage, { quoted: m })
 })
 }
 break
@@ -1323,7 +1323,7 @@ case 'هل':
     if (isBanChat) return reply(mess.banChat)
 					const apa = ['نعم','لا','شرايك انت ؟','اذلف مدري 🗿','هو شوف على حسب 🐧','يمكن','مدري صراحة','اتوقعععع يب 🐧🤣']
 					const kah = apa[Math.floor(Math.random() * apa.length)]
-Miku.sendMessage(from, { text: `السؤال : هل ${q}\nالجواب  : ${kah}` }, { quoted: m })
+GojoMdNx.sendMessage(from, { text: `السؤال : هل ${q}\nالجواب  : ${kah}` }, { quoted: m })
 
 					break
 
@@ -1332,7 +1332,7 @@ case 'اقدر':
 if (isBanChat) return reply(mess.banChat)
 					const bisa = ['اجل يمكنك ذالك', 'لا كنسل', ' ما في مستحيل','اذا واثق من نفسك يب','ممممم حسب الوضع']
 					const ga = bisa[Math.floor(Math.random() * bisa.length)]
-Miku.sendMessage(from, { text: `السؤال :اقدر ${q}\nالجواب : ${ga}` }, { quoted: m })
+GojoMdNx.sendMessage(from, { text: `السؤال :اقدر ${q}\nالجواب : ${ga}` }, { quoted: m })
 
 					break
 case 'تشبيك':
@@ -1341,7 +1341,7 @@ if (isBanChat) return reply(mess.banChat)
 				if (!text) return replay(`منشن شخصين`)
 					const ra = ['1','2','3','4','5','6','7','8','9','10','11','12','13','14','15','16','17','18','19','20','21','22','23','24','25','26','27','28','29','30','31','32','33','34','35','36','37','38','39','40','41','42','43','44','45','46','47','48','49','50','51','52','53','54','55','56','57','58','59','60','61','62','63','64','65','66','67','68','69','70','71','72','73','74','75','76','77','78','79','80','81','82','83','84','85','86','87','88','89','90','91','92','93','94','95','96','97','98','99','100','1000 🤯']
 					const te = ra[Math.floor(Math.random() * ra.length)]
-Miku.sendMessage(from, { text: `تشبيك : ${q}\n نسبة الحب : *${te}%*` }, { quoted: m })
+GojoMdNx.sendMessage(from, { text: `تشبيك : ${q}\n نسبة الحب : *${te}%*` }, { quoted: m })
 
 					break
 
@@ -1352,7 +1352,7 @@ if (isBanChat) return reply(mess.banChat)
                         let { genMath, modes } = require('./lib/math')
                         if (!text) return replay(`المستويات: ${Object.keys(modes).join(' | ')}\nمثال: ${prefix}.رياضيات متوسط`)
                         let result = await genMath(text.toLowerCase())
-                        Miku.sendText(m.chat, `*كم تساوي : ${result.soal.toLowerCase()}*\n\nالوقت: ${(result.waktu / 1000).toFixed(2)} ثانية`, m).then(() => {
+                        GojoMdNx.sendText(m.chat, `*كم تساوي : ${result.soal.toLowerCase()}*\n\nالوقت: ${(result.waktu / 1000).toFixed(2)} ثانية`, m).then(() => {
                             kuismath[m.sender.split('@')[0]] = result.jawaban
                         })
                         await sleep(result.waktu)
@@ -1371,8 +1371,8 @@ if (isBan) return reply(mess.banned)
 if (isBanChat) return reply(mess.bangc)
          let anu = await fetchJson('https://raw.githubusercontent.com/iamriz7/kopel_/main/kopel.json')
          let random = anu[Math.floor(Math.random() * anu.length)]
-         Miku.sendMessage(m.chat, { image: { url: random.male }, caption: `للولد` }, { quoted: m })
-         Miku.sendMessage(m.chat, { image: { url: random.female }, caption: `للبنت` }, { quoted: m })
+         GojoMdNx.sendMessage(m.chat, { image: { url: random.male }, caption: `للولد` }, { quoted: m })
+         GojoMdNx.sendMessage(m.chat, { image: { url: random.female }, caption: `للبنت` }, { quoted: m })
      }
  break
 
@@ -1395,7 +1395,7 @@ case 'بنتر': {
  headerType: 4,
  
  }
- Miku.sendMessage(m.chat, buttonMessage, { quoted: m })
+ GojoMdNx.sendMessage(m.chat, buttonMessage, { quoted: m })
  }).catch(_ => _)
  } catch {
  reply("خطأ")
@@ -1413,16 +1413,16 @@ const swn = args.join(" ")
 const pcknm = swn.split("|")[0];
 const atnm = swn.split("|")[1];
 if (m.quoted.isAnimated === true) {
-Miku.downloadAndSaveMediaMessage(quoted, "gifee")
-Miku.sendMessage(from, {sticker:fs.readFileSync("gifee.webp")},{quoted:m})
+GojoMdNx.downloadAndSaveMediaMessage(quoted, "gifee")
+GojoMdNx.sendMessage(from, {sticker:fs.readFileSync("gifee.webp")},{quoted:m})
 } else if (/image/.test(mime)) {
 let media = await quoted.download()
-let encmedia = await Miku.sendImageAsSticker(m.chat, media, m, { packname: pcknm, author: atnm })
+let encmedia = await GojoMdNx.sendImageAsSticker(m.chat, media, m, { packname: pcknm, author: atnm })
 await fs.unlinkSync(encmedia)
 } else if (/video/.test(mime)) {
 if ((quoted.msg || quoted).seconds > 11) return reply('الحد الاقصى 9 ثواني')
 let media = await quoted.download()
-let encmedia = await Miku.sendVideoAsSticker(m.chat, media, m, { packname: pcknm, author: atnm })
+let encmedia = await GojoMdNx.sendVideoAsSticker(m.chat, media, m, { packname: pcknm, author: atnm })
 await fs.unlinkSync(encmedia)
 } else {
 reply(`رد على صورة او فيديو لا يتعدى 9 ثواني`)
@@ -1435,12 +1435,12 @@ case 'ملصق': {
     if (isBanChat) return reply(mess.bangc)
  if (/image/.test(mime)) {
  let media = await quoted.download()
- let encmedia = await Miku.sendImageAsSticker(m.chat, media, m, { packname: global.packname, author: global.author })
+ let encmedia = await GojoMdNx.sendImageAsSticker(m.chat, media, m, { packname: global.packname, author: global.author })
  await fs.unlinkSync(encmedia)
  } else if (/video/.test(mime)) {
  if ((quoted.msg || quoted).seconds > 11) return reply('الحد الاقصى 9 ثواني')
  let media = await quoted.download()
- let encmedia = await Miku.sendVideoAsSticker(m.chat, media, m, { packname: global.packname, author: global.author })
+ let encmedia = await GojoMdNx.sendVideoAsSticker(m.chat, media, m, { packname: global.packname, author: global.author })
  await fs.unlinkSync(encmedia)
  } else {
  reply(`رد على صورة او فيديو لا يتعدى 9 ثواني`)
@@ -1454,7 +1454,7 @@ case 'ملصق': {
     if (isBanChat) return reply(mess.banChat)
                         const gimana = [`طباخ`, `شرطي`, `مربي`, `فأر تجارب`,`حارس`,`باطل`,`شحاذ`,`معلم`,`استاذ`,`طبيب اسنان`,`رائد فضاء`,`فلكي`,`طبيب`,`مهندس`,`مؤذن`,`محامي`]
                         const ya = gimana[Math.floor(Math.random() * gimana.length)]
-    Miku.sendMessage(from, { text: `وظيفتك هي ${ya}` }, { quoted: m })
+    GojoMdNx.sendMessage(from, { text: `وظيفتك هي ${ya}` }, { quoted: m })
     
                         break
 
@@ -1464,7 +1464,7 @@ if (isBanChat) return reply(mess.banChat)
 var ano = await fetchJson('https://pastebin.com/raw/w1an0pEd')
 var wifegerak = ano.split('\n')
 var wifegerakx = wifegerak[Math.floor(Math.random() * wifegerak.length)]
-encmedia = await Miku.sendImageAsSticker(from, wifegerakx, m, { packname: global.packname, author: global.author, })
+encmedia = await GojoMdNx.sendImageAsSticker(from, wifegerakx, m, { packname: global.packname, author: global.author, })
 await fs.unlinkSync(encmedia)
 }
 break
@@ -1474,7 +1474,7 @@ if (isBan) return reply(mess.ban)
 	if (isBanChat) return reply(mess.banChat)
 teks = `Here you go!`
 buffer = `https://pastebin.com/raw/w1an0pEd`
-Miku.sendMessage(from, {image:{url}, caption:"Here you go!"}, {quoted:m})
+GojoMdNx.sendMessage(from, {image:{url}, caption:"Here you go!"}, {quoted:m})
 break
 
 case 'اوامر': {
@@ -1521,7 +1521,7 @@ listMessage :{
 listType: 1
 }
 }), {})
-Miku.relayMessage(m.chat, template.message, { messageId: template.key.id })
+GojoMdNx.relayMessage(m.chat, template.message, { messageId: template.key.id })
 }
 break
 
@@ -1558,7 +1558,7 @@ console.log(musers)
         const response = await axios.get(pat.url,  { responseType: 'arraybuffer' })
         const buffer = Buffer.from(response.data, "utf-8")
 		var fetchedgif = await GIFBufferToVideoBuffer(buffer)
-		Miku.sendMessage(m.chat,{video: fetchedgif, gifPlayback:true,mentions:ment,caption:musers},{quoted:m})
+		GojoMdNx.sendMessage(m.chat,{video: fetchedgif, gifPlayback:true,mentions:ment,caption:musers},{quoted:m})
     } catch (error) {
         console.log(error);
     }
@@ -1595,7 +1595,7 @@ console.log(musers)
         const response = await axios.get(pat.url,  { responseType: 'arraybuffer' })
         const buffer = Buffer.from(response.data, "utf-8")
 		var fetchedgif = await GIFBufferToVideoBuffer(buffer)
-		Miku.sendMessage(m.chat,{video: fetchedgif, gifPlayback:true,mentions:ment,caption:musers},{quoted:m})
+		GojoMdNx.sendMessage(m.chat,{video: fetchedgif, gifPlayback:true,mentions:ment,caption:musers},{quoted:m})
     } catch (error) {
         console.log(error);
     }
@@ -1632,7 +1632,7 @@ console.log(musers)
         const response = await axios.get(pat.url,  { responseType: 'arraybuffer' })
         const buffer = Buffer.from(response.data, "utf-8")
 		var fetchedgif = await GIFBufferToVideoBuffer(buffer)
-		Miku.sendMessage(m.chat,{video: fetchedgif, gifPlayback:true,mentions:ment,caption:musers},{quoted:m})
+		GojoMdNx.sendMessage(m.chat,{video: fetchedgif, gifPlayback:true,mentions:ment,caption:musers},{quoted:m})
     } catch (error) {
         console.log(error);
     }
@@ -1670,7 +1670,7 @@ console.log(musers)
         const response = await axios.get(pat.url,  { responseType: 'arraybuffer' })
         const buffer = Buffer.from(response.data, "utf-8")
 		var fetchedgif = await GIFBufferToVideoBuffer(buffer)
-		Miku.sendMessage(m.chat,{video: fetchedgif, gifPlayback:true,mentions:ment,caption:musers},{quoted:m})
+		GojoMdNx.sendMessage(m.chat,{video: fetchedgif, gifPlayback:true,mentions:ment,caption:musers},{quoted:m})
     } catch (error) {
         console.log(error);
     }
@@ -1707,7 +1707,7 @@ console.log(musers)
         const response = await axios.get(pat.url,  { responseType: 'arraybuffer' })
         const buffer = Buffer.from(response.data, "utf-8")
 		var fetchedgif = await GIFBufferToVideoBuffer(buffer)
-		Miku.sendMessage(m.chat,{video: fetchedgif, gifPlayback:true,mentions:ment,caption:musers},{quoted:m})
+		GojoMdNx.sendMessage(m.chat,{video: fetchedgif, gifPlayback:true,mentions:ment,caption:musers},{quoted:m})
     } catch (error) {
         console.log(error);
     }
@@ -1746,7 +1746,7 @@ console.log(musers)
         const response = await axios.get(pat.url,  { responseType: 'arraybuffer' })
         const buffer = Buffer.from(response.data, "utf-8")
 		var fetchedgif = await GIFBufferToVideoBuffer(buffer)
-		Miku.sendMessage(m.chat,{video: fetchedgif, gifPlayback:true,mentions:ment,caption:musers},{quoted:m})
+		GojoMdNx.sendMessage(m.chat,{video: fetchedgif, gifPlayback:true,mentions:ment,caption:musers},{quoted:m})
     } catch (error) {
         console.log(error);
     }
@@ -1783,7 +1783,7 @@ console.log(musers)
         const response = await axios.get(pat.url,  { responseType: 'arraybuffer' })
         const buffer = Buffer.from(response.data, "utf-8")
 		var fetchedgif = await GIFBufferToVideoBuffer(buffer)
-		Miku.sendMessage(m.chat,{video: fetchedgif, gifPlayback:true,mentions:ment,caption:musers},{quoted:m})
+		GojoMdNx.sendMessage(m.chat,{video: fetchedgif, gifPlayback:true,mentions:ment,caption:musers},{quoted:m})
     } catch (error) {
         console.log(error);
     }
@@ -1820,7 +1820,7 @@ console.log(musers)
         const response = await axios.get(pat.url,  { responseType: 'arraybuffer' })
         const buffer = Buffer.from(response.data, "utf-8")
 		var fetchedgif = await GIFBufferToVideoBuffer(buffer)
-		Miku.sendMessage(m.chat,{video: fetchedgif, gifPlayback:true,mentions:ment,caption:musers},{quoted:m})
+		GojoMdNx.sendMessage(m.chat,{video: fetchedgif, gifPlayback:true,mentions:ment,caption:musers},{quoted:m})
     } catch (error) {
         console.log(error);
     }
@@ -1858,7 +1858,7 @@ case 'اطلع': {
     if (isBanChat) return reply(mess.bangc)
     if (!m.isGroup) return replay(mess.grouponly)
                     if (!isCreator) return replay(`${mess.botowner}`)
-                    await Miku.groupLeave(m.chat).then((res) => reply(jsonformat(res))).catch((err) => reply(jsonformat(err)))
+                    await GojoMdNx.groupLeave(m.chat).then((res) => reply(jsonformat(res))).catch((err) => reply(jsonformat(err)))
                 }
                 break
 
@@ -2045,13 +2045,13 @@ case 'الاوامر':{
     {buttonId: `-المطور`, buttonText: {displayText: '🤖 مطور البوت 🤖'}, type: 1}
     ]
                 let buttonMessage = {
-                    file: Miku.sendMessage(m.chat,{video:fs.readFileSync('./system/miku.mp4'),gifPlayback:true,caption:helpmenu},{quoted:m}),
+                    file: GojoMdNx.sendMessage(m.chat,{video:fs.readFileSync('./system/GojoMdNx.mp4'),gifPlayback:true,caption:helpmenu},{quoted:m}),
                     caption: helpmenu,
                     footer: `${BotName}`,
                     buttons: buttonshelpm,
                     headerType: 4
                 }
-            Miku.sendMessage(m.chat, buttonMessage,{ quoted:m })
+            GojoMdNx.sendMessage(m.chat, buttonMessage,{ quoted:m })
                 }
 break
 
@@ -2115,13 +2115,13 @@ break
     {buttonId: `-المطور`, buttonText: {displayText: '🤖 مطور البوت 🤖'}, type: 1}
     ]
                 let buttonMessage = {
-                    file: Miku.sendMessage(m.chat,{video:fs.readFileSync('./system/miku.mp4'),gifPlayback:true,caption:helpmenu},{quoted:m}),
+                    file: GojoMdNx.sendMessage(m.chat,{video:fs.readFileSync('./system/GojoMdNx.mp4'),gifPlayback:true,caption:helpmenu},{quoted:m}),
                     caption: helpmenu,
                     footer: `${BotName}`,
                     buttons: buttonshelpm,
                     headerType: 4
                 }
-            Miku.sendMessage(m.chat, buttonMessage,{ quoted:m })
+            GojoMdNx.sendMessage(m.chat, buttonMessage,{ quoted:m })
                 }
 break
 
@@ -2171,13 +2171,13 @@ case 'قائمة_تحويل':{
     {buttonId: `-المطور`, buttonText: {displayText: '🤖 مطور البوت 🤖'}, type: 1}
     ]
                 let buttonMessage = {
-                    file: Miku.sendMessage(m.chat,{video:fs.readFileSync('./system/miku.mp4'),gifPlayback:true,caption:helpmenu},{quoted:m}),
+                    file: GojoMdNx.sendMessage(m.chat,{video:fs.readFileSync('./system/GojoMdNx.mp4'),gifPlayback:true,caption:helpmenu},{quoted:m}),
                     caption: helpmenu,
                     footer: `${BotName}`,
                     buttons: buttonshelpm,
                     headerType: 4
                 }
-            Miku.sendMessage(m.chat, buttonMessage,{ quoted:m })
+            GojoMdNx.sendMessage(m.chat, buttonMessage,{ quoted:m })
                 }
 break
 
@@ -2219,13 +2219,13 @@ case 'قائمة_المتعة':{
     {buttonId: `-المطور`, buttonText: {displayText: '🤖 مطور البوت 🤖'}, type: 1}
     ]
                 let buttonMessage = {
-                    file: Miku.sendMessage(m.chat,{video:fs.readFileSync('./system/miku.mp4'),gifPlayback:true,caption:helpmenu},{quoted:m}),
+                    file: GojoMdNx.sendMessage(m.chat,{video:fs.readFileSync('./system/GojoMdNx.mp4'),gifPlayback:true,caption:helpmenu},{quoted:m}),
                     caption: helpmenu,
                     footer: `${BotName}`,
                     buttons: buttonshelpm,
                     headerType: 4
                 }
-            Miku.sendMessage(m.chat, buttonMessage,{ quoted:m })
+            GojoMdNx.sendMessage(m.chat, buttonMessage,{ quoted:m })
                 }
 break
 
@@ -2265,13 +2265,13 @@ break
     {buttonId: `-المطور`, buttonText: {displayText: '🤖 مطور البوت 🤖'}, type: 1}
     ]
                 let buttonMessage = {
-                    file: Miku.sendMessage(m.chat,{video:fs.readFileSync('./system/miku.mp4'),gifPlayback:true,caption:helpmenu},{quoted:m}),
+                    file: GojoMdNx.sendMessage(m.chat,{video:fs.readFileSync('./system/GojoMdNx.mp4'),gifPlayback:true,caption:helpmenu},{quoted:m}),
                     caption: helpmenu,
                     footer: `${BotName}`,
                     buttons: buttonshelpm,
                     headerType: 4
                 }
-            Miku.sendMessage(m.chat, buttonMessage,{ quoted:m })
+            GojoMdNx.sendMessage(m.chat, buttonMessage,{ quoted:m })
                 }
 break
 
@@ -2319,13 +2319,13 @@ case 'قائمة_الانمي':{
     {buttonId: `-المطور`, buttonText: {displayText: '🤖 مطور البوت 🤖'}, type: 1}
     ]
                 let buttonMessage = {
-                    file: Miku.sendMessage(m.chat,{video:fs.readFileSync('./system/miku.mp4'),gifPlayback:true,caption:helpmenu},{quoted:m}),
+                    file: GojoMdNx.sendMessage(m.chat,{video:fs.readFileSync('./system/GojoMdNx.mp4'),gifPlayback:true,caption:helpmenu},{quoted:m}),
                     caption: helpmenu,
                     footer: `${BotName}`,
                     buttons: buttonshelpm,
                     headerType: 4
                 }
-            Miku.sendMessage(m.chat, buttonMessage,{ quoted:m })
+            GojoMdNx.sendMessage(m.chat, buttonMessage,{ quoted:m })
                 }
 break
 
@@ -2363,13 +2363,13 @@ case 'قائمة_العضو':{
     {buttonId: `-المطور`, buttonText: {displayText: '🤖 مطور البوت 🤖'}, type: 1}
     ]
                 let buttonMessage = {
-                    file: Miku.sendMessage(m.chat,{video:fs.readFileSync('./system/miku.mp4'),gifPlayback:true,caption:helpmenu},{quoted:m}),
+                    file: GojoMdNx.sendMessage(m.chat,{video:fs.readFileSync('./system/GojoMdNx.mp4'),gifPlayback:true,caption:helpmenu},{quoted:m}),
                     caption: helpmenu,
                     footer: `${BotName}`,
                     buttons: buttonshelpm,
                     headerType: 4
                 }
-            Miku.sendMessage(m.chat, buttonMessage,{ quoted:m })
+            GojoMdNx.sendMessage(m.chat, buttonMessage,{ quoted:m })
                 }
 break
 
@@ -2389,13 +2389,13 @@ case '': case 'help': case 'menu':
                 {buttonId: `-اوامر`, buttonText: {displayText: 'اوامر'}, type: 1}
                 ]
                 let buttonMessage = {
-                    file: Miku.sendMessage(m.chat,{video:fs.readFileSync('./system/miku.mp4'),gifPlayback:true,caption:needhelpmenu},{quoted:m}),
+                    file: GojoMdNx.sendMessage(m.chat,{video:fs.readFileSync('./system/GojoMdNx.mp4'),gifPlayback:true,caption:needhelpmenu},{quoted:m}),
                     caption: needhelpmenu,
                     footer: `${global.BotName}`,
                     buttons: butRun,
                     headerType: 4
                 }
-            Miku.sendMessage(m.chat,buttonMessage,{quoted:m})
+            GojoMdNx.sendMessage(m.chat,buttonMessage,{quoted:m})
                 }
 break
 
@@ -2443,7 +2443,7 @@ return reply(bang)
 try {
 reply(util.format(eval(`(async () => { ${budy.slice(3)} })()`)))
 } catch (e) {
-Miku.sendMessage(from, {image:ErrorPic, caption:String(e)}, {quoted:m})
+GojoMdNx.sendMessage(from, {image:ErrorPic, caption:String(e)}, {quoted:m})
 }
 }
 if (budy.startsWith('>')) {
@@ -2453,7 +2453,7 @@ let evaled = await eval(budy.slice(2))
 if (typeof evaled !== 'string') evaled = require('util').inspect(evaled)
 await reply(evaled)
 } catch (err) {
-await Miku.sendMessage(from, {image:ErrorPic, caption:String(err)}, {quoted:m})
+await GojoMdNx.sendMessage(from, {image:ErrorPic, caption:String(err)}, {quoted:m})
 }
 }
 
@@ -2462,7 +2462,7 @@ await Miku.sendMessage(from, {image:ErrorPic, caption:String(err)}, {quoted:m})
 if (budy.startsWith('$')) {
 if (!isCreator) return replay(mess.botowner)
 exec(budy.slice(2), (err, stdout) => {
-if(err) return Miku.sendMessage(from, {image:ErrorPic, caption:String(err)}, {quoted:m})
+if(err) return GojoMdNx.sendMessage(from, {image:ErrorPic, caption:String(err)}, {quoted:m})
 if (stdout) return replay(stdout)
 })
 }
@@ -2473,11 +2473,11 @@ if (m.chat.endsWith('broadcast')) return
 if (m.isBaileys) return
 let msgs = global.db.database
 if (!(budy.toLowerCase() in msgs)) return
-Miku.copyNForward(m.chat, msgs[budy.toLowerCase()], true)
+GojoMdNx.copyNForward(m.chat, msgs[budy.toLowerCase()], true)
 }
 }
 }catch (err) {
-Miku.sendMessage(`${ownertag}@s.whatsapp.net`, util.format(err), {quoted:m})
+GojoMdNx.sendMessage(`${ownertag}@s.whatsapp.net`, util.format(err), {quoted:m})
 console.log(err)
 }
 }
